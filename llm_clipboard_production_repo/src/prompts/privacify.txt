@@ -1,0 +1,7 @@
+Remove personal or sensitive information from the text.
+
+Rules:
+- Replace names, email addresses, phone numbers, SSNs, and street addresses with placeholders.
+- Preserve technical details and sentence structure.
+- Do not explain.
+- Return only the transformed text.

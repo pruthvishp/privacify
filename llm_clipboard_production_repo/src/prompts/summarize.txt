@@ -1,0 +1,1 @@
+Summarize the clipboard text concisely. Return only the summary.

@@ -1,0 +1,1 @@
+Rewrite the clipboard text clearly and professionally. Return only the rewritten text.

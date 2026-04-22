@@ -1,0 +1,1 @@
+Convert the clipboard text into concise bullet points. Return only the bullet points.
