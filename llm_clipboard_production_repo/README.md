@@ -11,15 +11,16 @@ Copy text, press a hotkey, wait for the beep, then paste the transformed result.
 - One-click installer
 - Startup support
 - Editable prompt files
+- Deterministic privacify mode for common sensitive data
 - Audible beep when output is ready
 - Debug logging for troubleshooting
 
 ## Default Hotkeys
 
-- **Ctrl + Alt + 1** → Rewrite
-- **Ctrl + Alt + 2** → Summarize
-- **Ctrl + Alt + 3** → Bullet points
-- **Ctrl + Alt + 4** → Privacify
+- **Ctrl + Alt + 1** -> Rewrite
+- **Ctrl + Alt + 2** -> Summarize
+- **Ctrl + Alt + 3** -> Bullet points
+- **Ctrl + Alt + 4** -> Privacify
 
 ## Install
 
@@ -61,16 +62,16 @@ C:\Users\<your-user>\LLMClipboardPaste\llm_clipboard.ahk
 
 ```text
 .
-├── install.ps1
-├── README.md
-└── src/
-    ├── llm_clipboard.ahk
-    ├── llm_clipboard_worker.ps1
-    └── prompts/
-        ├── rewrite.txt
-        ├── summarize.txt
-        ├── bullets.txt
-        └── privacify.txt
+|-- install.ps1
+|-- README.md
+`-- src/
+    |-- llm_clipboard.ahk
+    |-- llm_clipboard_worker.ps1
+    `-- prompts/
+        |-- rewrite.txt
+        |-- summarize.txt
+        |-- bullets.txt
+        `-- privacify.txt
 ```
 
 ## Configuration
@@ -87,9 +88,12 @@ Example:
 {
   "model": "phi3",
   "ollama_url": "http://127.0.0.1:11434/api/generate",
-  "trim_output": true
+  "trim_output": true,
+  "privacify_use_model": false
 }
 ```
+
+`privacify_use_model` defaults to `false`, so Ctrl+Alt+4 redacts common sensitive values without sending the text to Ollama. Set it to `true` if you also want the local model to rewrite the already-redacted text.
 
 ## Prompt Customization
 

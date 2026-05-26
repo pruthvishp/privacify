@@ -160,6 +160,7 @@ function Install-AppFiles {
         model = $SelectedModel
         ollama_url = "http://127.0.0.1:11434/api/generate"
         trim_output = $true
+        privacify_use_model = $false
         profiles = @(
             @{ name = "rewrite";   hotkey = "^!1"; prompt_file = (Join-Path $TargetDir "prompts\rewrite.txt") },
             @{ name = "summarize"; hotkey = "^!2"; prompt_file = (Join-Path $TargetDir "prompts\summarize.txt") },
