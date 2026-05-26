@@ -30,6 +30,12 @@ From PowerShell in the repo root:
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -StartAtLogin
 ```
 
+For privacify-only installs, you can skip Ollama setup:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -SkipOllama
+```
+
 ## What the installer does
 
 - Installs Ollama
