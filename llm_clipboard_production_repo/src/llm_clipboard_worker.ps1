@@ -39,6 +39,7 @@ function Invoke-PrivacifyRedaction {
     $redacted = [regex]::Replace($redacted, '(?i)\b(passport|driver(?:''s)? license|driving licence|license number|national id|tax id|tin|ein)[ \t]*(?:number|no\.?)?[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{4,24}\b', '$1 [GOV_ID]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(dob|date of birth|birth date|birthday)[ \t]*(?:is|:|=)?[ \t]*(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|[A-Z][a-z]+[ \t]+\d{1,2},?[ \t]+\d{4})\b', '$1 [DATE_OF_BIRTH]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(salary|income|compensation|pay|wage|bonus|revenue|profit|net worth|rent|mortgage|balance|account balance)[ \t]*(?:is|:|=)?[ \t]*(?:USD|INR|EUR|GBP)?[ \t]*\d[\d,]*(?:\.\d{1,2})?[ \t]*(?:dollars?|rupees?|usd|inr|eur|gbp|million|billion|per year|annually|monthly|/year|/yr|/mo|k|m)?', '$1 [AMOUNT]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(paid|earns?|makes?|charges?|costs?|owes?|owed|spent|spends|received|receives)[ \t]*(?:USD|INR|EUR|GBP)?[ \t]*\d[\d,]*(?:\.\d{1,2})?[ \t]*(?:dollars?|rupees?|usd|inr|eur|gbp|million|billion|per year|annually|monthly|/year|/yr|/mo|k|m)?', '$1 [AMOUNT]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(?:\d{1,3}\.){3}\d{1,3}\b', '[IP_ADDRESS]')
     $redacted = [regex]::Replace($redacted, '(?i)\b[0-9a-f]{2}(?::[0-9a-f]{2}){5}\b', '[MAC_ADDRESS]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(?:[0-9a-f]{1,4}:){2,7}[0-9a-f]{1,4}\b', '[IP_ADDRESS]')
