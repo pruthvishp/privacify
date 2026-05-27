@@ -37,6 +37,7 @@ function Invoke-PrivacifyRedaction {
     $redacted = [regex]::Replace($redacted, '(?i)\b(cvv|cvc|security code)[ \t]*(?:is|:|=)?[ \t]*\d{3,4}\b', '$1 [CARD_SECURITY_CODE]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(routing number|routing|account number|bank account|iban|swift|bic)[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{4,34}\b', '$1 [BANK_INFO]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(passport|driver(?:''s)? license|driving licence|license number|national id|tax id|tin|ein)[ \t]*(?:number|no\.?)?[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{4,24}\b', '$1 [GOV_ID]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(claim number|claim id|case number|case id|ticket number|ticket id|employee id|member id|patient id|account id)[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{3,32}\b', '$1 [ID]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(dob|date of birth|birth date|birthday)[ \t]*(?:is|:|=)?[ \t]*(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|[A-Z][a-z]+[ \t]+\d{1,2},?[ \t]+\d{4})\b', '$1 [DATE_OF_BIRTH]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(salary|income|compensation|pay|wage|bonus|revenue|profit|net worth|rent|mortgage|balance|account balance)[ \t]*(?:is|:|=)?[ \t]*(?:USD|INR|EUR|GBP)?[ \t]*\d[\d,]*(?:\.\d{1,2})?[ \t]*(?:dollars?|rupees?|usd|inr|eur|gbp|million|billion|per year|annually|monthly|/year|/yr|/mo|k|m)?', '$1 [AMOUNT]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(paid|earns?|makes?|charges?|costs?|owes?|owed|spent|spends|received|receives)[ \t]*(?:USD|INR|EUR|GBP)?[ \t]*\d[\d,]*(?:\.\d{1,2})?[ \t]*(?:dollars?|rupees?|usd|inr|eur|gbp|million|billion|per year|annually|monthly|/year|/yr|/mo|k|m)?', '$1 [AMOUNT]')
@@ -47,19 +48,30 @@ function Invoke-PrivacifyRedaction {
     $redacted = [regex]::Replace($redacted, '(?i)\b(zip|postal code)[ \t]*(?:is|:|=)?[ \t]*\d{5}(?:-\d{4})?\b', '$1 [POSTAL_CODE]')
     $redacted = [regex]::Replace($redacted, '(?i)\b(user(?:name)?|login|handle)[ \t]*(?:is|:|=)[ \t]*@?[A-Z0-9._-]{3,}\b', '$1 [USERNAME]')
 
-    $labelPattern = '(?im)\b(?<label>(?:full[ \t]+name|name|customer|client|patient|employee)[ \t]*:[ \t]*)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $labelPattern = '(?m)\b(?<label>(?i:full[ \t]+name|name|customer|client|patient|employee)[ \t]*:[ \t]*)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
     $redacted = [regex]::Replace($redacted, $labelPattern, {
         param($match)
         return $match.Groups['label'].Value + '[NAME]'
     })
 
-    $inlineNamePattern = '(?im)\b(?<label>(?:my name is|name is|customer is|client is|patient is|employee is)[ \t]+)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $inlineNamePattern = '(?m)\b(?<label>(?i:my name is|name is|customer is|client is|patient is|employee is)[ \t]+)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
     $redacted = [regex]::Replace($redacted, $inlineNamePattern, {
         param($match)
         return $match.Groups['label'].Value + '[NAME]'
     })
 
+    $roleNamePattern = '(?m)\b(?<label>(?i:customer|client|patient|employee|member|user)[ \t]+)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $redacted = [regex]::Replace($redacted, $roleNamePattern, {
+        param($match)
+        return $match.Groups['label'].Value + '[NAME]'
+    })
+
     $redacted = [regex]::Replace($redacted, '\](?=[A-Za-z])', '] ')
+    $redacted = [regex]::Replace($redacted, '(?i)\[REDACTED_NAME\]', '[NAME]')
+    $redacted = [regex]::Replace($redacted, '(?i)\[REDACTED_SECRET\]', '[SECRET]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(ssn|social security(?: number)?)[ \t]+\[SENSITIVE_VALUE\]', '$1 [SSN]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(salary|income|compensation|pay|wage|bonus|revenue|profit|net worth|rent|mortgage|balance|account balance|paid|earns?|makes?|charges?|costs?|owes?|owed|spent|spends|received|receives)[ \t]+\[SENSITIVE_VALUE\]', '$1 [AMOUNT]')
+    $redacted = [regex]::Replace($redacted, '(?i)\[SENSITIVE_VALUE\]', '[REDACTED]')
     $redacted = [regex]::Replace($redacted, '\[AMOUNT\]\$', '[AMOUNT]')
     $redacted = [regex]::Replace($redacted, '(?i)\brouting\s+\[BANK_INFO\]\s+\[BANK_INFO\]', 'routing number [BANK_INFO]')
 
@@ -106,6 +118,10 @@ $body = @{
     model  = $config.model
     prompt = $fullPrompt
     stream = $false
+    options = @{
+        temperature = 0
+        top_p = 0.1
+    }
 } | ConvertTo-Json -Depth 6
 
 Write-DebugLog "profile=$ProfileName | request_chars=$($fullPrompt.Length) | input_chars=$($inputText.Length)"

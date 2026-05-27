@@ -162,7 +162,7 @@ function Install-AppFiles {
         model = $SelectedModel
         ollama_url = "http://127.0.0.1:11434/api/generate"
         trim_output = $true
-        privacify_use_model = $false
+        privacify_use_model = $true
         app_name = "Privacify"
         accent_color = "#2563eb"
         image_path = ""
