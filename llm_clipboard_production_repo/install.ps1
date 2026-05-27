@@ -152,24 +152,16 @@ function Install-AppFiles {
     $here = $PSScriptRoot
     Copy-Item -LiteralPath (Join-Path $here "src\llm_clipboard.ahk") -Destination (Join-Path $TargetDir "llm_clipboard.ahk") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\llm_clipboard_worker.ps1") -Destination (Join-Path $TargetDir "llm_clipboard_worker.ps1") -Force
-    Copy-Item -LiteralPath (Join-Path $here "src\privacify_manager.js") -Destination (Join-Path $TargetDir "privacify_manager.js") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\rewrite.txt") -Destination (Join-Path $TargetDir "prompts\rewrite.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\summarize.txt") -Destination (Join-Path $TargetDir "prompts\summarize.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\bullets.txt") -Destination (Join-Path $TargetDir "prompts\bullets.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\privacify.txt") -Destination (Join-Path $TargetDir "prompts\privacify.txt") -Force
-    Copy-Item -LiteralPath (Join-Path $here "src\privacify_examples.json") -Destination (Join-Path $TargetDir "privacify_examples.json") -Force
 
     $config = @{
         model = $SelectedModel
         ollama_url = "http://127.0.0.1:11434/api/generate"
         trim_output = $true
-        privacify_use_model = $true
-        privacify_examples_enabled = $true
-        privacify_examples_limit = 60
-        privacify_examples_file = (Join-Path $TargetDir "privacify_examples.json")
-        app_name = "Privacify"
-        accent_color = "#2563eb"
-        image_path = ""
+        privacify_use_model = $false
         profiles = @(
             @{ name = "rewrite";   hotkey = "^!1"; prompt_file = (Join-Path $TargetDir "prompts\rewrite.txt") },
             @{ name = "summarize"; hotkey = "^!2"; prompt_file = (Join-Path $TargetDir "prompts\summarize.txt") },
@@ -235,7 +227,5 @@ Write-Host "  Ctrl+Alt+1 = rewrite"
 Write-Host "  Ctrl+Alt+2 = summarize"
 Write-Host "  Ctrl+Alt+3 = bullets"
 Write-Host "  Ctrl+Alt+4 = privacify"
-Write-Host "Manager UI:"
-Write-Host "  node `"$InstallDir\privacify_manager.js`" 8787"
 Write-Host ""
 Write-Host "Use -StartAtLogin if you want it to auto-start when the user signs in."
