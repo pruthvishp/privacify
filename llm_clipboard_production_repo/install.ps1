@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$InstallDir = "$env:USERPROFILE\LLMClipboardPaste",
-    [string]$Model = "phi3",
+    [string]$Model = "qwen2.5:3b",
     [switch]$StartAtLogin,
     [switch]$SkipOllama
 )
