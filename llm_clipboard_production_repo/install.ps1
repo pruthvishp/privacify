@@ -1,8 +1,9 @@
 [CmdletBinding()]
 param(
     [string]$InstallDir = "$env:USERPROFILE\LLMClipboardPaste",
-    [string]$Model = "phi3",
-    [switch]$StartAtLogin
+    [string]$Model = "qwen2.5:3b",
+    [switch]$StartAtLogin,
+    [switch]$SkipOllama
 )
 
 $ErrorActionPreference = "Stop"
@@ -58,7 +59,7 @@ function Ensure-WingetPackage {
     if (-not $wg) { throw "WinGet is required for $Name but was not found on this PC." }
 
     Write-Step "Installing $Name with WinGet"
-    & winget install --id $Id -e --accept-package-agreements --accept-source-agreements --disable-interactivity
+    & winget install --id $Id -e --accept-package-agreements --accept-source-agreements --disable-interactivity | Out-Host
 }
 
 function Ensure-Ollama {
@@ -160,6 +161,7 @@ function Install-AppFiles {
         model = $SelectedModel
         ollama_url = "http://127.0.0.1:11434/api/generate"
         trim_output = $true
+        privacify_use_model = $false
         profiles = @(
             @{ name = "rewrite";   hotkey = "^!1"; prompt_file = (Join-Path $TargetDir "prompts\rewrite.txt") },
             @{ name = "summarize"; hotkey = "^!2"; prompt_file = (Join-Path $TargetDir "prompts\summarize.txt") },
@@ -190,14 +192,18 @@ function Register-StartupShortcut {
 }
 
 Write-Step "Installing dependencies"
-$ollamaExe = Ensure-Ollama
+if (-not $SkipOllama) {
+    $ollamaExe = Ensure-Ollama
+}
 $ahkExe = Ensure-AutoHotkey
 
 Write-Step "Preparing app files"
 Install-AppFiles -TargetDir $InstallDir -SelectedModel $Model
 
-Ensure-OllamaServer -OllamaExe $ollamaExe
-Ensure-Model -OllamaExe $ollamaExe -ModelName $Model
+if (-not $SkipOllama) {
+    Ensure-OllamaServer -OllamaExe $ollamaExe
+    Ensure-Model -OllamaExe $ollamaExe -ModelName $Model
+}
 
 $scriptPath = Join-Path $InstallDir "llm_clipboard.ahk"
 
@@ -213,6 +219,9 @@ Write-Host ""
 Write-Host "Done." -ForegroundColor Green
 Write-Host "Install directory: $InstallDir"
 Write-Host "Model: $Model"
+if ($SkipOllama) {
+    Write-Host "Ollama setup skipped. Rewrite, summarize, and bullets need Ollama before use."
+}
 Write-Host "Hotkeys:"
 Write-Host "  Ctrl+Alt+1 = rewrite"
 Write-Host "  Ctrl+Alt+2 = summarize"

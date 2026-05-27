@@ -13,6 +13,27 @@ function Write-DebugLog {
     Add-Content -LiteralPath $logPath -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') | $Message"
 }
 
+function Invoke-PrivacifyRedaction {
+    param([Parameter(Mandatory=$true)][string]$Text)
+
+    $redacted = $Text
+
+    $redacted = [regex]::Replace($redacted, '(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', '[EMAIL]')
+    $redacted = [regex]::Replace($redacted, '\b\d{3}-\d{2}-\d{4}\b', '[SSN]')
+    $redacted = [regex]::Replace($redacted, '(?x)(?<!\d)(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}(?!\d)', '[PHONE]')
+    $redacted = [regex]::Replace($redacted, '(?x)(?<!\d)(?:\d[ -]?){13,19}(?!\d)', '[PAYMENT_CARD]')
+    $redacted = [regex]::Replace($redacted, '\b(?:\d{1,3}\.){3}\d{1,3}\b', '[IP_ADDRESS]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b\d{1,6}\s+[A-Z0-9][A-Z0-9 .''-]*\s+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd|Court|Ct|Way|Place|Pl)\b(?:[,\s]+(?:Apt|Apartment|Suite|Ste|Unit)\s*[A-Z0-9-]+)?', '[ADDRESS]')
+
+    $labelPattern = '(?im)\b(?<label>(?:full[ \t]+name|name|customer|client|patient|employee)[ \t]*:[ \t]*)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $redacted = [regex]::Replace($redacted, $labelPattern, {
+        param($match)
+        return $match.Groups['label'].Value + '[NAME]'
+    })
+
+    return $redacted
+}
+
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
     throw "Config file not found: $ConfigPath"
 }
@@ -35,6 +56,11 @@ if ([string]::IsNullOrWhiteSpace($inputText)) {
     throw "Input text was empty."
 }
 
+$isPrivacifyProfile = $ProfileName -eq "privacify"
+if ($isPrivacifyProfile) {
+    $inputText = Invoke-PrivacifyRedaction -Text $inputText
+}
+
 $prompt = Get-Content -Raw -LiteralPath $profile.prompt_file
 
 $fullPrompt = @"
@@ -52,19 +78,35 @@ $body = @{
 
 Write-DebugLog "profile=$ProfileName | request_chars=$($fullPrompt.Length) | input_chars=$($inputText.Length)"
 
-try {
-    Write-DebugLog "profile=$ProfileName | calling_ollama"
-    $response = Invoke-RestMethod -Uri $config.ollama_url -Method Post -Body $body -ContentType "application/json" -TimeoutSec 120
-    Write-DebugLog "profile=$ProfileName | ollama_returned"
-}
-catch {
-    Write-DebugLog "profile=$ProfileName | ollama_error=$($_.Exception.Message)"
-    throw "Ollama request failed or timed out: $($_.Exception.Message)"
+$useModel = $true
+if ($isPrivacifyProfile -and $null -ne $config.privacify_use_model) {
+    $useModel = [bool]$config.privacify_use_model
 }
 
-$output = [string]$response.response
+if ($useModel) {
+    try {
+        Write-DebugLog "profile=$ProfileName | calling_ollama"
+        $response = Invoke-RestMethod -Uri $config.ollama_url -Method Post -Body $body -ContentType "application/json" -TimeoutSec 120
+        Write-DebugLog "profile=$ProfileName | ollama_returned"
+    }
+    catch {
+        Write-DebugLog "profile=$ProfileName | ollama_error=$($_.Exception.Message)"
+        throw "Ollama request failed or timed out: $($_.Exception.Message)"
+    }
+
+    $output = [string]$response.response
+}
+else {
+    Write-DebugLog "profile=$ProfileName | skipped_ollama"
+    $output = $inputText
+}
+
 if ($config.trim_output -and $null -ne $output) {
     $output = $output.Trim()
+}
+
+if ($isPrivacifyProfile -and $null -ne $output) {
+    $output = Invoke-PrivacifyRedaction -Text $output
 }
 
 if ([string]::IsNullOrWhiteSpace($output)) {
