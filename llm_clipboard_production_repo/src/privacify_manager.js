@@ -90,7 +90,7 @@ function runPrivacify(input) {
   if (result.status !== 0) {
     throw new Error(result.stderr || result.stdout || "Privacify test failed.");
   }
-  const output = fs.readFileSync(outputFile, "utf8");
+  const output = fs.readFileSync(outputFile, "utf8").replace(/^\uFEFF/, "");
   fs.rmSync(dir, { recursive: true, force: true });
   return output;
 }
