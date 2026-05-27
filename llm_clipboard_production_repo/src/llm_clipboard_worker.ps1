@@ -18,20 +18,111 @@ function Invoke-PrivacifyRedaction {
 
     $redacted = $Text
 
+    $redacted = [regex]::Replace($redacted, '(?i)\bhttps?://[^\s<>"'']*(?:token|key|secret|password|pwd|auth|session|code)=[^\s<>"'']+', '[SENSITIVE_URL]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b((?:api|access|auth|refresh|secret|private|session|bearer)?[ \t]*(?:key|token|secret|password|pwd|passcode|credential))[ \t]*(?:is|:|=)[ \t]*["'']?[^"'',;\r\n\s]{6,}["'']?', '$1 [SECRET]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(authorization\s*:\s*bearer)\s+[A-Za-z0-9._~+/=-]{8,}\b', '$1 [TOKEN]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(aws_access_key_id|aws_secret_access_key|client_secret|private_key|webhook_secret)\s*(?:=|:)\s*["'']?[^"'',;\r\n\s]{6,}["'']?', '$1=[SECRET]')
+    $redacted = [regex]::Replace($redacted, '\bsk-[A-Za-z0-9_-]{16,}\b', '[API_KEY]')
+    $redacted = [regex]::Replace($redacted, '\bAKIA[0-9A-Z]{16}\b', '[AWS_ACCESS_KEY]')
+    $redacted = [regex]::Replace($redacted, '\bgh[pousr]_[A-Za-z0-9_]{20,}\b', '[GITHUB_TOKEN]')
+    $redacted = [regex]::Replace($redacted, '\bxox[baprs]-[A-Za-z0-9-]{10,}\b', '[SLACK_TOKEN]')
+    $redacted = [regex]::Replace($redacted, '\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b', '[JWT]')
+
     $redacted = [regex]::Replace($redacted, '(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', '[EMAIL]')
     $redacted = [regex]::Replace($redacted, '\b\d{3}-\d{2}-\d{4}\b', '[SSN]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(ssn|social security(?: number)?)[ \t]*(?:is|:|=)?[ \t]*[\w-]*\d[\d \t-]{3,}\b', '$1 [SSN]')
     $redacted = [regex]::Replace($redacted, '(?x)(?<!\d)(?:\+?1[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}(?!\d)', '[PHONE]')
     $redacted = [regex]::Replace($redacted, '(?x)(?<!\d)(?:\d[ -]?){13,19}(?!\d)', '[PAYMENT_CARD]')
-    $redacted = [regex]::Replace($redacted, '\b(?:\d{1,3}\.){3}\d{1,3}\b', '[IP_ADDRESS]')
-    $redacted = [regex]::Replace($redacted, '(?i)\b\d{1,6}\s+[A-Z0-9][A-Z0-9 .''-]*\s+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd|Court|Ct|Way|Place|Pl)\b(?:[,\s]+(?:Apt|Apartment|Suite|Ste|Unit)\s*[A-Z0-9-]+)?', '[ADDRESS]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(card|credit card|debit card|cc)[ \t]*(?:is|:|=)?[ \t]*(?:\d[ -]?){13,19}\b', '$1 [PAYMENT_CARD]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(cvv|cvc|security code)[ \t]*(?:is|:|=)?[ \t]*\d{3,4}\b', '$1 [CARD_SECURITY_CODE]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(routing number|routing|account number|bank account|iban|swift|bic)[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{4,34}\b', '$1 [BANK_INFO]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(passport|driver(?:''s)? license|driving licence|license number|national id|tax id|tin|ein)[ \t]*(?:number|no\.?)?[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{4,24}\b', '$1 [GOV_ID]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(claim number|claim id|case number|case id|ticket number|ticket id|employee id|member id|patient id|account id)[ \t]*(?:is|:|=)?[ \t]*[A-Z0-9-]{3,32}\b', '$1 [ID]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(dob|date of birth|birth date|birthday)[ \t]*(?:is|:|=)?[ \t]*(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|[A-Z][a-z]+[ \t]+\d{1,2},?[ \t]+\d{4})\b', '$1 [DATE_OF_BIRTH]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(salary|income|compensation|pay|wage|bonus|revenue|profit|net worth|rent|mortgage|balance|account balance)[ \t]*(?:is|:|=)?[ \t]*(?:USD|INR|EUR|GBP)?[ \t]*\d[\d,]*(?:\.\d{1,2})?[ \t]*(?:dollars?|rupees?|usd|inr|eur|gbp|million|billion|per year|annually|monthly|/year|/yr|/mo|k|m)?', '$1 [AMOUNT]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(paid|earns?|makes?|charges?|costs?|owes?|owed|spent|spends|received|receives)[ \t]*(?:USD|INR|EUR|GBP)?[ \t]*\d[\d,]*(?:\.\d{1,2})?[ \t]*(?:dollars?|rupees?|usd|inr|eur|gbp|million|billion|per year|annually|monthly|/year|/yr|/mo|k|m)?', '$1 [AMOUNT]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(?:\d{1,3}\.){3}\d{1,3}\b', '[IP_ADDRESS]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b[0-9a-f]{2}(?::[0-9a-f]{2}){5}\b', '[MAC_ADDRESS]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(?:[0-9a-f]{1,4}:){2,7}[0-9a-f]{1,4}\b', '[IP_ADDRESS]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b\d{1,6}[ \t]+[A-Z0-9][A-Z0-9 .''-]*[ \t]+(?:Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd|Court|Ct|Way|Place|Pl)\b(?:[,\t ]+(?:Apt|Apartment|Suite|Ste|Unit)[ \t]*[A-Z0-9-]+)?', '[ADDRESS]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(zip|postal code)[ \t]*(?:is|:|=)?[ \t]*\d{5}(?:-\d{4})?\b', '$1 [POSTAL_CODE]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(user(?:name)?|login|handle)[ \t]*(?:is|:|=)[ \t]*@?[A-Z0-9._-]{3,}\b', '$1 [USERNAME]')
 
-    $labelPattern = '(?im)\b(?<label>(?:full[ \t]+name|name|customer|client|patient|employee)[ \t]*:[ \t]*)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $labelPattern = '(?m)\b(?<label>(?i:full[ \t]+name|name|customer|client|patient|employee)[ \t]*:[ \t]*)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
     $redacted = [regex]::Replace($redacted, $labelPattern, {
         param($match)
         return $match.Groups['label'].Value + '[NAME]'
     })
 
+    $inlineNamePattern = '(?m)\b(?<label>(?i:my name is|name is|customer is|client is|patient is|employee is)[ \t]+)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $redacted = [regex]::Replace($redacted, $inlineNamePattern, {
+        param($match)
+        return $match.Groups['label'].Value + '[NAME]'
+    })
+
+    $roleNamePattern = '(?m)\b(?<label>(?i:customer|client|patient|employee|member|user)[ \t]+)(?<value>[A-Z][a-z]+(?:[ \t]+[A-Z][a-z]+){1,3})\b'
+    $redacted = [regex]::Replace($redacted, $roleNamePattern, {
+        param($match)
+        return $match.Groups['label'].Value + '[NAME]'
+    })
+
+    $redacted = [regex]::Replace($redacted, '\](?=[A-Za-z])', '] ')
+    $redacted = [regex]::Replace($redacted, '(?i)\[REDACTED_NAME\]', '[NAME]')
+    $redacted = [regex]::Replace($redacted, '(?i)\[REDACTED_SECRET\]', '[SECRET]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(ssn|social security(?: number)?)[ \t]+\[SENSITIVE_VALUE\]', '$1 [SSN]')
+    $redacted = [regex]::Replace($redacted, '(?i)\b(salary|income|compensation|pay|wage|bonus|revenue|profit|net worth|rent|mortgage|balance|account balance|paid|earns?|makes?|charges?|costs?|owes?|owed|spent|spends|received|receives)[ \t]+\[SENSITIVE_VALUE\]', '$1 [AMOUNT]')
+    $redacted = [regex]::Replace($redacted, '(?i)\[SENSITIVE_VALUE\]', '[REDACTED]')
+    $redacted = [regex]::Replace($redacted, '\[AMOUNT\]\$', '[AMOUNT]')
+    $redacted = [regex]::Replace($redacted, '(?i)\brouting\s+\[BANK_INFO\]\s+\[BANK_INFO\]', 'routing number [BANK_INFO]')
+
     return $redacted
+}
+
+function Get-PrivacifyExamplePrompt {
+    param(
+        [Parameter(Mandatory=$true)]$Config,
+        [Parameter(Mandatory=$true)][string]$ConfigPath
+    )
+
+    if ($null -ne $Config.privacify_examples_enabled -and -not [bool]$Config.privacify_examples_enabled) {
+        return ""
+    }
+
+    $appDir = Split-Path -Parent $ConfigPath
+    $examplesFile = Join-Path $appDir "privacify_examples.json"
+    if ($Config.privacify_examples_file) {
+        $examplesFile = [string]$Config.privacify_examples_file
+    }
+    if (-not (Test-Path -LiteralPath $examplesFile)) {
+        return ""
+    }
+
+    $limit = 60
+    if ($Config.privacify_examples_limit) {
+        $limit = [Math]::Max(0, [int]$Config.privacify_examples_limit)
+    }
+    if ($limit -le 0) {
+        return ""
+    }
+
+    $examples = Get-Content -Raw -LiteralPath $examplesFile | ConvertFrom-Json
+    $enabled = @($examples | Where-Object { $null -eq $_.enabled -or [bool]$_.enabled } | Select-Object -First $limit)
+    if ($enabled.Count -eq 0) {
+        return ""
+    }
+
+    $parts = New-Object System.Collections.Generic.List[string]
+    $parts.Add("User examples. Follow this redaction style:")
+    foreach ($example in $enabled) {
+        if ([string]::IsNullOrWhiteSpace([string]$example.input) -or [string]::IsNullOrWhiteSpace([string]$example.output)) {
+            continue
+        }
+        $parts.Add("Input: $($example.input)")
+        $parts.Add("Output: $($example.output)")
+        $parts.Add("")
+    }
+
+    return ($parts -join "`n").Trim()
 }
 
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
@@ -62,9 +153,19 @@ if ($isPrivacifyProfile) {
 }
 
 $prompt = Get-Content -Raw -LiteralPath $profile.prompt_file
+$examplesPrompt = ""
+if ($isPrivacifyProfile) {
+    $examplesPrompt = Get-PrivacifyExamplePrompt -Config $config -ConfigPath $ConfigPath
+}
+
+$promptSections = @($prompt.Trim())
+if (-not [string]::IsNullOrWhiteSpace($examplesPrompt)) {
+    $promptSections += $examplesPrompt
+}
+$promptWithExamples = $promptSections -join "`n`n"
 
 $fullPrompt = @"
-$prompt
+$promptWithExamples
 
 Input text:
 $inputText
@@ -74,6 +175,10 @@ $body = @{
     model  = $config.model
     prompt = $fullPrompt
     stream = $false
+    options = @{
+        temperature = 0
+        top_p = 0.1
+    }
 } | ConvertTo-Json -Depth 6
 
 Write-DebugLog "profile=$ProfileName | request_chars=$($fullPrompt.Length) | input_chars=$($inputText.Length)"
@@ -113,5 +218,5 @@ if ([string]::IsNullOrWhiteSpace($output)) {
     throw "Model returned empty output."
 }
 
-Set-Content -LiteralPath $OutputFile -Value $output -Encoding UTF8
+[System.IO.File]::WriteAllText($OutputFile, $output, [System.Text.UTF8Encoding]::new($false))
 Write-DebugLog "profile=$ProfileName | output_chars=$($output.Length)"
