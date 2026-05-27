@@ -157,12 +157,16 @@ function Install-AppFiles {
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\summarize.txt") -Destination (Join-Path $TargetDir "prompts\summarize.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\bullets.txt") -Destination (Join-Path $TargetDir "prompts\bullets.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\privacify.txt") -Destination (Join-Path $TargetDir "prompts\privacify.txt") -Force
+    Copy-Item -LiteralPath (Join-Path $here "src\privacify_examples.json") -Destination (Join-Path $TargetDir "privacify_examples.json") -Force
 
     $config = @{
         model = $SelectedModel
         ollama_url = "http://127.0.0.1:11434/api/generate"
         trim_output = $true
         privacify_use_model = $true
+        privacify_examples_enabled = $true
+        privacify_examples_limit = 60
+        privacify_examples_file = (Join-Path $TargetDir "privacify_examples.json")
         app_name = "Privacify"
         accent_color = "#2563eb"
         image_path = ""

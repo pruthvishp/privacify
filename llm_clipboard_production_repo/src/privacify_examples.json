@@ -1,0 +1,1402 @@
+[
+  {
+    "id": "seed-001",
+    "enabled": true,
+    "category": "people",
+    "input": "Customer Jane Smith asked for a callback.",
+    "output": "Customer [NAME] asked for a callback."
+  },
+  {
+    "id": "seed-002",
+    "enabled": true,
+    "category": "people",
+    "input": "Patient John Doe reported dizziness after lunch.",
+    "output": "Patient [NAME] reported dizziness after lunch."
+  },
+  {
+    "id": "seed-003",
+    "enabled": true,
+    "category": "people",
+    "input": "Employee Priya Nair received a warning from HR.",
+    "output": "Employee [NAME] received a warning from HR."
+  },
+  {
+    "id": "seed-004",
+    "enabled": true,
+    "category": "people",
+    "input": "Client Rahul Mehta signed the renewal yesterday.",
+    "output": "Client [NAME] signed the renewal yesterday."
+  },
+  {
+    "id": "seed-005",
+    "enabled": true,
+    "category": "people",
+    "input": "My name is Maria Garcia and I need help.",
+    "output": "My name is [NAME] and I need help."
+  },
+  {
+    "id": "seed-006",
+    "enabled": true,
+    "category": "contact",
+    "input": "Email jane.smith@example.com with the invoice.",
+    "output": "Email [EMAIL] with the invoice."
+  },
+  {
+    "id": "seed-007",
+    "enabled": true,
+    "category": "contact",
+    "input": "Send the link to john.doe@acme.io before 5pm.",
+    "output": "Send the link to [EMAIL] before 5pm."
+  },
+  {
+    "id": "seed-008",
+    "enabled": true,
+    "category": "contact",
+    "input": "Call me at +1 650 555 0199 when ready.",
+    "output": "Call me at [PHONE] when ready."
+  },
+  {
+    "id": "seed-009",
+    "enabled": true,
+    "category": "contact",
+    "input": "Her mobile is 408.555.1212.",
+    "output": "Her mobile is [PHONE]."
+  },
+  {
+    "id": "seed-010",
+    "enabled": true,
+    "category": "identity",
+    "input": "SSN 111-22-3333 belongs to the applicant.",
+    "output": "SSN [SSN] belongs to the applicant."
+  },
+  {
+    "id": "seed-011",
+    "enabled": true,
+    "category": "identity",
+    "input": "My ssn is 123-45-6789.",
+    "output": "My ssn is [SSN]."
+  },
+  {
+    "id": "seed-012",
+    "enabled": true,
+    "category": "identity",
+    "input": "Passport number P1000407 expires next year.",
+    "output": "Passport number [GOV_ID] expires next year."
+  },
+  {
+    "id": "seed-013",
+    "enabled": true,
+    "category": "identity",
+    "input": "Driver license D7000636 was scanned.",
+    "output": "Driver license [GOV_ID] was scanned."
+  },
+  {
+    "id": "seed-014",
+    "enabled": true,
+    "category": "identity",
+    "input": "DOB is 2/14/1983 for the patient.",
+    "output": "DOB is [DATE_OF_BIRTH] for the patient."
+  },
+  {
+    "id": "seed-015",
+    "enabled": true,
+    "category": "finance",
+    "input": "He is paid 12342342$ per month.",
+    "output": "He is paid [AMOUNT] per month."
+  },
+  {
+    "id": "seed-016",
+    "enabled": true,
+    "category": "finance",
+    "input": "Salary is 122112345 dollars annually.",
+    "output": "Salary is [AMOUNT] annually."
+  },
+  {
+    "id": "seed-017",
+    "enabled": true,
+    "category": "finance",
+    "input": "The bonus was 45,000 INR.",
+    "output": "The bonus was [AMOUNT]."
+  },
+  {
+    "id": "seed-018",
+    "enabled": true,
+    "category": "finance",
+    "input": "Rent is 23000/mo for the unit.",
+    "output": "Rent is [AMOUNT] for the unit."
+  },
+  {
+    "id": "seed-019",
+    "enabled": true,
+    "category": "finance",
+    "input": "Account balance is 1,250.50.",
+    "output": "Account balance is [AMOUNT]."
+  },
+  {
+    "id": "seed-020",
+    "enabled": true,
+    "category": "finance",
+    "input": "Card 5555-4444-3333-2222 was used.",
+    "output": "Card [PAYMENT_CARD] was used."
+  },
+  {
+    "id": "seed-021",
+    "enabled": true,
+    "category": "finance",
+    "input": "CVV is 120 for the card.",
+    "output": "CVV is [CARD_SECURITY_CODE] for the card."
+  },
+  {
+    "id": "seed-022",
+    "enabled": true,
+    "category": "finance",
+    "input": "Routing number 100000021 and account number 9000000357.",
+    "output": "Routing number [BANK_INFO] and account number [BANK_INFO]."
+  },
+  {
+    "id": "seed-023",
+    "enabled": true,
+    "category": "secret",
+    "input": "API key is ghp_abcd1234abcd1234abcd1234.",
+    "output": "API key is [SECRET]."
+  },
+  {
+    "id": "seed-024",
+    "enabled": true,
+    "category": "secret",
+    "input": "Use token xoxb-123456789-secret for staging.",
+    "output": "Use token [SECRET] for staging."
+  },
+  {
+    "id": "seed-025",
+    "enabled": true,
+    "category": "secret",
+    "input": "Password: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature",
+    "output": "Password: [SECRET]"
+  },
+  {
+    "id": "seed-026",
+    "enabled": true,
+    "category": "secret",
+    "input": "Authorization: Bearer abc123secret987",
+    "output": "Authorization: Bearer [TOKEN]"
+  },
+  {
+    "id": "seed-027",
+    "enabled": true,
+    "category": "secret",
+    "input": "Webhook secret=sk-test-1234567890abcdef",
+    "output": "Webhook secret=[SECRET]"
+  },
+  {
+    "id": "seed-028",
+    "enabled": true,
+    "category": "location",
+    "input": "Ship to 42 Wallaby Way Suite 9.",
+    "output": "Ship to [ADDRESS]."
+  },
+  {
+    "id": "seed-029",
+    "enabled": true,
+    "category": "location",
+    "input": "Home address is 88 MG Road Unit 12.",
+    "output": "Home address is [ADDRESS]."
+  },
+  {
+    "id": "seed-030",
+    "enabled": true,
+    "category": "location",
+    "input": "ZIP code is 90029.",
+    "output": "ZIP code is [POSTAL_CODE]."
+  },
+  {
+    "id": "seed-031",
+    "enabled": true,
+    "category": "network",
+    "input": "Server IP 172.16.2.8 failed health checks.",
+    "output": "Server IP [IP_ADDRESS] failed health checks."
+  },
+  {
+    "id": "seed-032",
+    "enabled": true,
+    "category": "network",
+    "input": "MAC address A4:B1:C2:D3:E4:F5 belongs to the laptop.",
+    "output": "MAC address [MAC_ADDRESS] belongs to the laptop."
+  },
+  {
+    "id": "seed-033",
+    "enabled": true,
+    "category": "network",
+    "input": "Open https://app.example.com/reset?token=ghp_abcd1234abcd1234abcd1234",
+    "output": "Open [SENSITIVE_URL]"
+  },
+  {
+    "id": "seed-034",
+    "enabled": true,
+    "category": "legal",
+    "input": "Claim number is ACC-778899.",
+    "output": "Claim number is [ID]."
+  },
+  {
+    "id": "seed-035",
+    "enabled": true,
+    "category": "legal",
+    "input": "Case id PAT-12345 was reopened.",
+    "output": "Case id [ID] was reopened."
+  },
+  {
+    "id": "seed-036",
+    "enabled": true,
+    "category": "hr",
+    "input": "Employee id EMP-10035 has rating 1.",
+    "output": "Employee id [ID] has rating [HR_DETAIL]."
+  },
+  {
+    "id": "seed-037",
+    "enabled": true,
+    "category": "hr",
+    "input": "Performance rating was 2 for Isha Shah.",
+    "output": "Performance rating was [HR_DETAIL] for [NAME]."
+  },
+  {
+    "id": "seed-038",
+    "enabled": true,
+    "category": "medical",
+    "input": "Ben Taylor takes lisinopril after dinner.",
+    "output": "[NAME] takes [MEDICATION] after dinner."
+  },
+  {
+    "id": "seed-039",
+    "enabled": true,
+    "category": "medical",
+    "input": "Diagnosis for Maya Singh: diabetes.",
+    "output": "Diagnosis for [NAME]: [DIAGNOSIS]."
+  },
+  {
+    "id": "seed-040",
+    "enabled": true,
+    "category": "people",
+    "input": "Customer Noah Wilson asked for a callback.",
+    "output": "Customer [NAME] asked for a callback."
+  },
+  {
+    "id": "seed-041",
+    "enabled": true,
+    "category": "people",
+    "input": "Patient Jane Smith reported dizziness after lunch.",
+    "output": "Patient [NAME] reported dizziness after lunch."
+  },
+  {
+    "id": "seed-042",
+    "enabled": true,
+    "category": "people",
+    "input": "Employee John Doe received a warning from HR.",
+    "output": "Employee [NAME] received a warning from HR."
+  },
+  {
+    "id": "seed-043",
+    "enabled": true,
+    "category": "people",
+    "input": "Client Priya Nair signed the renewal yesterday.",
+    "output": "Client [NAME] signed the renewal yesterday."
+  },
+  {
+    "id": "seed-044",
+    "enabled": true,
+    "category": "people",
+    "input": "My name is Rahul Mehta and I need help.",
+    "output": "My name is [NAME] and I need help."
+  },
+  {
+    "id": "seed-045",
+    "enabled": true,
+    "category": "contact",
+    "input": "Email maria.garcia@demo.org with the invoice.",
+    "output": "Email [EMAIL] with the invoice."
+  },
+  {
+    "id": "seed-046",
+    "enabled": true,
+    "category": "contact",
+    "input": "Send the link to jane.smith@example.com before 5pm.",
+    "output": "Send the link to [EMAIL] before 5pm."
+  },
+  {
+    "id": "seed-047",
+    "enabled": true,
+    "category": "contact",
+    "input": "Call me at 212-555-0188 when ready.",
+    "output": "Call me at [PHONE] when ready."
+  },
+  {
+    "id": "seed-048",
+    "enabled": true,
+    "category": "contact",
+    "input": "Her mobile is +1 650 555 0199.",
+    "output": "Her mobile is [PHONE]."
+  },
+  {
+    "id": "seed-049",
+    "enabled": true,
+    "category": "identity",
+    "input": "SSN 555 66 7777 belongs to the applicant.",
+    "output": "SSN [SSN] belongs to the applicant."
+  },
+  {
+    "id": "seed-050",
+    "enabled": true,
+    "category": "identity",
+    "input": "My ssn is 111-22-3333.",
+    "output": "My ssn is [SSN]."
+  },
+  {
+    "id": "seed-051",
+    "enabled": true,
+    "category": "identity",
+    "input": "Passport number P1001850 expires next year.",
+    "output": "Passport number [GOV_ID] expires next year."
+  },
+  {
+    "id": "seed-052",
+    "enabled": true,
+    "category": "identity",
+    "input": "Driver license D7002703 was scanned.",
+    "output": "Driver license [GOV_ID] was scanned."
+  },
+  {
+    "id": "seed-053",
+    "enabled": true,
+    "category": "identity",
+    "input": "DOB is 5/26/1992 for the patient.",
+    "output": "DOB is [DATE_OF_BIRTH] for the patient."
+  },
+  {
+    "id": "seed-054",
+    "enabled": true,
+    "category": "finance",
+    "input": "He is paid 1,250.50$ per month.",
+    "output": "He is paid [AMOUNT] per month."
+  },
+  {
+    "id": "seed-055",
+    "enabled": true,
+    "category": "finance",
+    "input": "Salary is 9800 dollars annually.",
+    "output": "Salary is [AMOUNT] annually."
+  },
+  {
+    "id": "seed-056",
+    "enabled": true,
+    "category": "finance",
+    "input": "The bonus was 750000 INR.",
+    "output": "The bonus was [AMOUNT]."
+  },
+  {
+    "id": "seed-057",
+    "enabled": true,
+    "category": "finance",
+    "input": "Rent is 12342342/mo for the unit.",
+    "output": "Rent is [AMOUNT] for the unit."
+  },
+  {
+    "id": "seed-058",
+    "enabled": true,
+    "category": "finance",
+    "input": "Account balance is 122112345.",
+    "output": "Account balance is [AMOUNT]."
+  },
+  {
+    "id": "seed-059",
+    "enabled": true,
+    "category": "finance",
+    "input": "Card 5555-4444-3333-2222 was used.",
+    "output": "Card [PAYMENT_CARD] was used."
+  },
+  {
+    "id": "seed-060",
+    "enabled": true,
+    "category": "finance",
+    "input": "CVV is 159 for the card.",
+    "output": "CVV is [CARD_SECURITY_CODE] for the card."
+  },
+  {
+    "id": "seed-061",
+    "enabled": true,
+    "category": "finance",
+    "input": "Routing number 100000060 and account number 9000001020.",
+    "output": "Routing number [BANK_INFO] and account number [BANK_INFO]."
+  },
+  {
+    "id": "seed-062",
+    "enabled": true,
+    "category": "secret",
+    "input": "API key is sk-test-1234567890abcdef.",
+    "output": "API key is [SECRET]."
+  },
+  {
+    "id": "seed-063",
+    "enabled": true,
+    "category": "secret",
+    "input": "Use token ghp_abcd1234abcd1234abcd1234 for staging.",
+    "output": "Use token [SECRET] for staging."
+  },
+  {
+    "id": "seed-064",
+    "enabled": true,
+    "category": "secret",
+    "input": "Password: xoxb-123456789-secret",
+    "output": "Password: [SECRET]"
+  },
+  {
+    "id": "seed-065",
+    "enabled": true,
+    "category": "secret",
+    "input": "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature",
+    "output": "Authorization: Bearer [TOKEN]"
+  },
+  {
+    "id": "seed-066",
+    "enabled": true,
+    "category": "secret",
+    "input": "Webhook secret=abc123secret987",
+    "output": "Webhook secret=[SECRET]"
+  },
+  {
+    "id": "seed-067",
+    "enabled": true,
+    "category": "location",
+    "input": "Ship to 1600 Amphitheatre Parkway.",
+    "output": "Ship to [ADDRESS]."
+  },
+  {
+    "id": "seed-068",
+    "enabled": true,
+    "category": "location",
+    "input": "Home address is 42 Wallaby Way Suite 9.",
+    "output": "Home address is [ADDRESS]."
+  },
+  {
+    "id": "seed-069",
+    "enabled": true,
+    "category": "location",
+    "input": "ZIP code is 90068.",
+    "output": "ZIP code is [POSTAL_CODE]."
+  },
+  {
+    "id": "seed-070",
+    "enabled": true,
+    "category": "network",
+    "input": "Server IP 10.0.8.12 failed health checks.",
+    "output": "Server IP [IP_ADDRESS] failed health checks."
+  },
+  {
+    "id": "seed-071",
+    "enabled": true,
+    "category": "network",
+    "input": "MAC address A4:B1:C2:D3:E4:F5 belongs to the laptop.",
+    "output": "MAC address [MAC_ADDRESS] belongs to the laptop."
+  },
+  {
+    "id": "seed-072",
+    "enabled": true,
+    "category": "network",
+    "input": "Open https://app.example.com/reset?token=sk-test-1234567890abcdef",
+    "output": "Open [SENSITIVE_URL]"
+  },
+  {
+    "id": "seed-073",
+    "enabled": true,
+    "category": "legal",
+    "input": "Claim number is TKT-88211.",
+    "output": "Claim number is [ID]."
+  },
+  {
+    "id": "seed-074",
+    "enabled": true,
+    "category": "legal",
+    "input": "Case id ACC-778899 was reopened.",
+    "output": "Case id [ID] was reopened."
+  },
+  {
+    "id": "seed-075",
+    "enabled": true,
+    "category": "hr",
+    "input": "Employee id EMP-10074 has rating 5.",
+    "output": "Employee id [ID] has rating [HR_DETAIL]."
+  },
+  {
+    "id": "seed-076",
+    "enabled": true,
+    "category": "hr",
+    "input": "Performance rating was 1 for Chris Walker.",
+    "output": "Performance rating was [HR_DETAIL] for [NAME]."
+  },
+  {
+    "id": "seed-077",
+    "enabled": true,
+    "category": "medical",
+    "input": "Isha Shah takes metformin after dinner.",
+    "output": "[NAME] takes [MEDICATION] after dinner."
+  },
+  {
+    "id": "seed-078",
+    "enabled": true,
+    "category": "medical",
+    "input": "Diagnosis for Ben Taylor: pneumonia.",
+    "output": "Diagnosis for [NAME]: [DIAGNOSIS]."
+  },
+  {
+    "id": "seed-079",
+    "enabled": true,
+    "category": "people",
+    "input": "Customer Maya Singh asked for a callback.",
+    "output": "Customer [NAME] asked for a callback."
+  },
+  {
+    "id": "seed-080",
+    "enabled": true,
+    "category": "people",
+    "input": "Patient Noah Wilson reported dizziness after lunch.",
+    "output": "Patient [NAME] reported dizziness after lunch."
+  },
+  {
+    "id": "seed-081",
+    "enabled": true,
+    "category": "people",
+    "input": "Employee Jane Smith received a warning from HR.",
+    "output": "Employee [NAME] received a warning from HR."
+  },
+  {
+    "id": "seed-082",
+    "enabled": true,
+    "category": "people",
+    "input": "Client John Doe signed the renewal yesterday.",
+    "output": "Client [NAME] signed the renewal yesterday."
+  },
+  {
+    "id": "seed-083",
+    "enabled": true,
+    "category": "people",
+    "input": "My name is Priya Nair and I need help.",
+    "output": "My name is [NAME] and I need help."
+  },
+  {
+    "id": "seed-084",
+    "enabled": true,
+    "category": "contact",
+    "input": "Email rahul.mehta@mail.test with the invoice.",
+    "output": "Email [EMAIL] with the invoice."
+  },
+  {
+    "id": "seed-085",
+    "enabled": true,
+    "category": "contact",
+    "input": "Send the link to maria.garcia@demo.org before 5pm.",
+    "output": "Send the link to [EMAIL] before 5pm."
+  },
+  {
+    "id": "seed-086",
+    "enabled": true,
+    "category": "contact",
+    "input": "Call me at (415) 555-2671 when ready.",
+    "output": "Call me at [PHONE] when ready."
+  },
+  {
+    "id": "seed-087",
+    "enabled": true,
+    "category": "contact",
+    "input": "Her mobile is 212-555-0188.",
+    "output": "Her mobile is [PHONE]."
+  },
+  {
+    "id": "seed-088",
+    "enabled": true,
+    "category": "identity",
+    "input": "SSN 234435 belongs to the applicant.",
+    "output": "SSN [SSN] belongs to the applicant."
+  },
+  {
+    "id": "seed-089",
+    "enabled": true,
+    "category": "identity",
+    "input": "My ssn is 555 66 7777.",
+    "output": "My ssn is [SSN]."
+  },
+  {
+    "id": "seed-090",
+    "enabled": true,
+    "category": "identity",
+    "input": "Passport number P1003293 expires next year.",
+    "output": "Passport number [GOV_ID] expires next year."
+  },
+  {
+    "id": "seed-091",
+    "enabled": true,
+    "category": "identity",
+    "input": "Driver license D7004770 was scanned.",
+    "output": "Driver license [GOV_ID] was scanned."
+  },
+  {
+    "id": "seed-092",
+    "enabled": true,
+    "category": "identity",
+    "input": "DOB is 8/11/1971 for the patient.",
+    "output": "DOB is [DATE_OF_BIRTH] for the patient."
+  },
+  {
+    "id": "seed-093",
+    "enabled": true,
+    "category": "finance",
+    "input": "He is paid 122112345$ per month.",
+    "output": "He is paid [AMOUNT] per month."
+  },
+  {
+    "id": "seed-094",
+    "enabled": true,
+    "category": "finance",
+    "input": "Salary is 45,000 dollars annually.",
+    "output": "Salary is [AMOUNT] annually."
+  },
+  {
+    "id": "seed-095",
+    "enabled": true,
+    "category": "finance",
+    "input": "The bonus was 23000 INR.",
+    "output": "The bonus was [AMOUNT]."
+  },
+  {
+    "id": "seed-096",
+    "enabled": true,
+    "category": "finance",
+    "input": "Rent is 1,250.50/mo for the unit.",
+    "output": "Rent is [AMOUNT] for the unit."
+  },
+  {
+    "id": "seed-097",
+    "enabled": true,
+    "category": "finance",
+    "input": "Account balance is 9800.",
+    "output": "Account balance is [AMOUNT]."
+  },
+  {
+    "id": "seed-098",
+    "enabled": true,
+    "category": "finance",
+    "input": "Card 5555-4444-3333-2222 was used.",
+    "output": "Card [PAYMENT_CARD] was used."
+  },
+  {
+    "id": "seed-099",
+    "enabled": true,
+    "category": "finance",
+    "input": "CVV is 198 for the card.",
+    "output": "CVV is [CARD_SECURITY_CODE] for the card."
+  },
+  {
+    "id": "seed-100",
+    "enabled": true,
+    "category": "finance",
+    "input": "Routing number 100000099 and account number 9000001683.",
+    "output": "Routing number [BANK_INFO] and account number [BANK_INFO]."
+  },
+  {
+    "id": "seed-101",
+    "enabled": true,
+    "category": "secret",
+    "input": "API key is abc123secret987.",
+    "output": "API key is [SECRET]."
+  },
+  {
+    "id": "seed-102",
+    "enabled": true,
+    "category": "secret",
+    "input": "Use token sk-test-1234567890abcdef for staging.",
+    "output": "Use token [SECRET] for staging."
+  },
+  {
+    "id": "seed-103",
+    "enabled": true,
+    "category": "secret",
+    "input": "Password: ghp_abcd1234abcd1234abcd1234",
+    "output": "Password: [SECRET]"
+  },
+  {
+    "id": "seed-104",
+    "enabled": true,
+    "category": "secret",
+    "input": "Authorization: Bearer xoxb-123456789-secret",
+    "output": "Authorization: Bearer [TOKEN]"
+  },
+  {
+    "id": "seed-105",
+    "enabled": true,
+    "category": "secret",
+    "input": "Webhook secret=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature",
+    "output": "Webhook secret=[SECRET]"
+  },
+  {
+    "id": "seed-106",
+    "enabled": true,
+    "category": "location",
+    "input": "Ship to 123 Market Street Apt 4.",
+    "output": "Ship to [ADDRESS]."
+  },
+  {
+    "id": "seed-107",
+    "enabled": true,
+    "category": "location",
+    "input": "Home address is 1600 Amphitheatre Parkway.",
+    "output": "Home address is [ADDRESS]."
+  },
+  {
+    "id": "seed-108",
+    "enabled": true,
+    "category": "location",
+    "input": "ZIP code is 90107.",
+    "output": "ZIP code is [POSTAL_CODE]."
+  },
+  {
+    "id": "seed-109",
+    "enabled": true,
+    "category": "network",
+    "input": "Server IP 192.168.1.44 failed health checks.",
+    "output": "Server IP [IP_ADDRESS] failed health checks."
+  },
+  {
+    "id": "seed-110",
+    "enabled": true,
+    "category": "network",
+    "input": "MAC address A4:B1:C2:D3:E4:F5 belongs to the laptop.",
+    "output": "MAC address [MAC_ADDRESS] belongs to the laptop."
+  },
+  {
+    "id": "seed-111",
+    "enabled": true,
+    "category": "network",
+    "input": "Open https://app.example.com/reset?token=abc123secret987",
+    "output": "Open [SENSITIVE_URL]"
+  },
+  {
+    "id": "seed-112",
+    "enabled": true,
+    "category": "legal",
+    "input": "Claim number is CASE-44291.",
+    "output": "Claim number is [ID]."
+  },
+  {
+    "id": "seed-113",
+    "enabled": true,
+    "category": "legal",
+    "input": "Case id TKT-88211 was reopened.",
+    "output": "Case id [ID] was reopened."
+  },
+  {
+    "id": "seed-114",
+    "enabled": true,
+    "category": "hr",
+    "input": "Employee id EMP-10113 has rating 4.",
+    "output": "Employee id [ID] has rating [HR_DETAIL]."
+  },
+  {
+    "id": "seed-115",
+    "enabled": true,
+    "category": "hr",
+    "input": "Performance rating was 5 for Leah Cohen.",
+    "output": "Performance rating was [HR_DETAIL] for [NAME]."
+  },
+  {
+    "id": "seed-116",
+    "enabled": true,
+    "category": "medical",
+    "input": "Chris Walker takes amoxicillin after dinner.",
+    "output": "[NAME] takes [MEDICATION] after dinner."
+  },
+  {
+    "id": "seed-117",
+    "enabled": true,
+    "category": "medical",
+    "input": "Diagnosis for Isha Shah: hypertension.",
+    "output": "Diagnosis for [NAME]: [DIAGNOSIS]."
+  },
+  {
+    "id": "seed-118",
+    "enabled": true,
+    "category": "people",
+    "input": "Customer Ben Taylor asked for a callback.",
+    "output": "Customer [NAME] asked for a callback."
+  },
+  {
+    "id": "seed-119",
+    "enabled": true,
+    "category": "people",
+    "input": "Patient Maya Singh reported dizziness after lunch.",
+    "output": "Patient [NAME] reported dizziness after lunch."
+  },
+  {
+    "id": "seed-120",
+    "enabled": true,
+    "category": "people",
+    "input": "Employee Noah Wilson received a warning from HR.",
+    "output": "Employee [NAME] received a warning from HR."
+  },
+  {
+    "id": "seed-121",
+    "enabled": true,
+    "category": "people",
+    "input": "Client Jane Smith signed the renewal yesterday.",
+    "output": "Client [NAME] signed the renewal yesterday."
+  },
+  {
+    "id": "seed-122",
+    "enabled": true,
+    "category": "people",
+    "input": "My name is John Doe and I need help.",
+    "output": "My name is [NAME] and I need help."
+  },
+  {
+    "id": "seed-123",
+    "enabled": true,
+    "category": "contact",
+    "input": "Email priya.nair@company.co with the invoice.",
+    "output": "Email [EMAIL] with the invoice."
+  },
+  {
+    "id": "seed-124",
+    "enabled": true,
+    "category": "contact",
+    "input": "Send the link to rahul.mehta@mail.test before 5pm.",
+    "output": "Send the link to [EMAIL] before 5pm."
+  },
+  {
+    "id": "seed-125",
+    "enabled": true,
+    "category": "contact",
+    "input": "Call me at 9175554455 when ready.",
+    "output": "Call me at [PHONE] when ready."
+  },
+  {
+    "id": "seed-126",
+    "enabled": true,
+    "category": "contact",
+    "input": "Her mobile is (415) 555-2671.",
+    "output": "Her mobile is [PHONE]."
+  },
+  {
+    "id": "seed-127",
+    "enabled": true,
+    "category": "identity",
+    "input": "SSN 987-65-4321 belongs to the applicant.",
+    "output": "SSN [SSN] belongs to the applicant."
+  },
+  {
+    "id": "seed-128",
+    "enabled": true,
+    "category": "identity",
+    "input": "My ssn is 234435.",
+    "output": "My ssn is [SSN]."
+  },
+  {
+    "id": "seed-129",
+    "enabled": true,
+    "category": "identity",
+    "input": "Passport number P1004736 expires next year.",
+    "output": "Passport number [GOV_ID] expires next year."
+  },
+  {
+    "id": "seed-130",
+    "enabled": true,
+    "category": "identity",
+    "input": "Driver license D7006837 was scanned.",
+    "output": "Driver license [GOV_ID] was scanned."
+  },
+  {
+    "id": "seed-131",
+    "enabled": true,
+    "category": "identity",
+    "input": "DOB is 11/23/1980 for the patient.",
+    "output": "DOB is [DATE_OF_BIRTH] for the patient."
+  },
+  {
+    "id": "seed-132",
+    "enabled": true,
+    "category": "finance",
+    "input": "He is paid 9800$ per month.",
+    "output": "He is paid [AMOUNT] per month."
+  },
+  {
+    "id": "seed-133",
+    "enabled": true,
+    "category": "finance",
+    "input": "Salary is 750000 dollars annually.",
+    "output": "Salary is [AMOUNT] annually."
+  },
+  {
+    "id": "seed-134",
+    "enabled": true,
+    "category": "finance",
+    "input": "The bonus was 12342342 INR.",
+    "output": "The bonus was [AMOUNT]."
+  },
+  {
+    "id": "seed-135",
+    "enabled": true,
+    "category": "finance",
+    "input": "Rent is 122112345/mo for the unit.",
+    "output": "Rent is [AMOUNT] for the unit."
+  },
+  {
+    "id": "seed-136",
+    "enabled": true,
+    "category": "finance",
+    "input": "Account balance is 45,000.",
+    "output": "Account balance is [AMOUNT]."
+  },
+  {
+    "id": "seed-137",
+    "enabled": true,
+    "category": "finance",
+    "input": "Card 5555-4444-3333-2222 was used.",
+    "output": "Card [PAYMENT_CARD] was used."
+  },
+  {
+    "id": "seed-138",
+    "enabled": true,
+    "category": "finance",
+    "input": "CVV is 237 for the card.",
+    "output": "CVV is [CARD_SECURITY_CODE] for the card."
+  },
+  {
+    "id": "seed-139",
+    "enabled": true,
+    "category": "finance",
+    "input": "Routing number 100000138 and account number 9000002346.",
+    "output": "Routing number [BANK_INFO] and account number [BANK_INFO]."
+  },
+  {
+    "id": "seed-140",
+    "enabled": true,
+    "category": "secret",
+    "input": "API key is eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature.",
+    "output": "API key is [SECRET]."
+  },
+  {
+    "id": "seed-141",
+    "enabled": true,
+    "category": "secret",
+    "input": "Use token abc123secret987 for staging.",
+    "output": "Use token [SECRET] for staging."
+  },
+  {
+    "id": "seed-142",
+    "enabled": true,
+    "category": "secret",
+    "input": "Password: sk-test-1234567890abcdef",
+    "output": "Password: [SECRET]"
+  },
+  {
+    "id": "seed-143",
+    "enabled": true,
+    "category": "secret",
+    "input": "Authorization: Bearer ghp_abcd1234abcd1234abcd1234",
+    "output": "Authorization: Bearer [TOKEN]"
+  },
+  {
+    "id": "seed-144",
+    "enabled": true,
+    "category": "secret",
+    "input": "Webhook secret=xoxb-123456789-secret",
+    "output": "Webhook secret=[SECRET]"
+  },
+  {
+    "id": "seed-145",
+    "enabled": true,
+    "category": "location",
+    "input": "Ship to 500 Mission St.",
+    "output": "Ship to [ADDRESS]."
+  },
+  {
+    "id": "seed-146",
+    "enabled": true,
+    "category": "location",
+    "input": "Home address is 123 Market Street Apt 4.",
+    "output": "Home address is [ADDRESS]."
+  },
+  {
+    "id": "seed-147",
+    "enabled": true,
+    "category": "location",
+    "input": "ZIP code is 90146.",
+    "output": "ZIP code is [POSTAL_CODE]."
+  },
+  {
+    "id": "seed-148",
+    "enabled": true,
+    "category": "network",
+    "input": "Server IP 8.8.8.8 failed health checks.",
+    "output": "Server IP [IP_ADDRESS] failed health checks."
+  },
+  {
+    "id": "seed-149",
+    "enabled": true,
+    "category": "network",
+    "input": "MAC address A4:B1:C2:D3:E4:F5 belongs to the laptop.",
+    "output": "MAC address [MAC_ADDRESS] belongs to the laptop."
+  },
+  {
+    "id": "seed-150",
+    "enabled": true,
+    "category": "network",
+    "input": "Open https://app.example.com/reset?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature",
+    "output": "Open [SENSITIVE_URL]"
+  },
+  {
+    "id": "seed-151",
+    "enabled": true,
+    "category": "legal",
+    "input": "Claim number is CLM-983771.",
+    "output": "Claim number is [ID]."
+  },
+  {
+    "id": "seed-152",
+    "enabled": true,
+    "category": "legal",
+    "input": "Case id CASE-44291 was reopened.",
+    "output": "Case id [ID] was reopened."
+  },
+  {
+    "id": "seed-153",
+    "enabled": true,
+    "category": "hr",
+    "input": "Employee id EMP-10152 has rating 3.",
+    "output": "Employee id [ID] has rating [HR_DETAIL]."
+  },
+  {
+    "id": "seed-154",
+    "enabled": true,
+    "category": "hr",
+    "input": "Performance rating was 4 for Victor Hugo.",
+    "output": "Performance rating was [HR_DETAIL] for [NAME]."
+  },
+  {
+    "id": "seed-155",
+    "enabled": true,
+    "category": "medical",
+    "input": "Leah Cohen takes atorvastatin after dinner.",
+    "output": "[NAME] takes [MEDICATION] after dinner."
+  },
+  {
+    "id": "seed-156",
+    "enabled": true,
+    "category": "medical",
+    "input": "Diagnosis for Chris Walker: anxiety.",
+    "output": "Diagnosis for [NAME]: [DIAGNOSIS]."
+  },
+  {
+    "id": "seed-157",
+    "enabled": true,
+    "category": "people",
+    "input": "Customer Isha Shah asked for a callback.",
+    "output": "Customer [NAME] asked for a callback."
+  },
+  {
+    "id": "seed-158",
+    "enabled": true,
+    "category": "people",
+    "input": "Patient Ben Taylor reported dizziness after lunch.",
+    "output": "Patient [NAME] reported dizziness after lunch."
+  },
+  {
+    "id": "seed-159",
+    "enabled": true,
+    "category": "people",
+    "input": "Employee Maya Singh received a warning from HR.",
+    "output": "Employee [NAME] received a warning from HR."
+  },
+  {
+    "id": "seed-160",
+    "enabled": true,
+    "category": "people",
+    "input": "Client Noah Wilson signed the renewal yesterday.",
+    "output": "Client [NAME] signed the renewal yesterday."
+  },
+  {
+    "id": "seed-161",
+    "enabled": true,
+    "category": "people",
+    "input": "My name is Jane Smith and I need help.",
+    "output": "My name is [NAME] and I need help."
+  },
+  {
+    "id": "seed-162",
+    "enabled": true,
+    "category": "contact",
+    "input": "Email john.doe@acme.io with the invoice.",
+    "output": "Email [EMAIL] with the invoice."
+  },
+  {
+    "id": "seed-163",
+    "enabled": true,
+    "category": "contact",
+    "input": "Send the link to priya.nair@company.co before 5pm.",
+    "output": "Send the link to [EMAIL] before 5pm."
+  },
+  {
+    "id": "seed-164",
+    "enabled": true,
+    "category": "contact",
+    "input": "Call me at 408.555.1212 when ready.",
+    "output": "Call me at [PHONE] when ready."
+  },
+  {
+    "id": "seed-165",
+    "enabled": true,
+    "category": "contact",
+    "input": "Her mobile is 9175554455.",
+    "output": "Her mobile is [PHONE]."
+  },
+  {
+    "id": "seed-166",
+    "enabled": true,
+    "category": "identity",
+    "input": "SSN 123-45-6789 belongs to the applicant.",
+    "output": "SSN [SSN] belongs to the applicant."
+  },
+  {
+    "id": "seed-167",
+    "enabled": true,
+    "category": "identity",
+    "input": "My ssn is 987-65-4321.",
+    "output": "My ssn is [SSN]."
+  },
+  {
+    "id": "seed-168",
+    "enabled": true,
+    "category": "identity",
+    "input": "Passport number P1006179 expires next year.",
+    "output": "Passport number [GOV_ID] expires next year."
+  },
+  {
+    "id": "seed-169",
+    "enabled": true,
+    "category": "identity",
+    "input": "Driver license D7008904 was scanned.",
+    "output": "Driver license [GOV_ID] was scanned."
+  },
+  {
+    "id": "seed-170",
+    "enabled": true,
+    "category": "identity",
+    "input": "DOB is 2/8/1989 for the patient.",
+    "output": "DOB is [DATE_OF_BIRTH] for the patient."
+  },
+  {
+    "id": "seed-171",
+    "enabled": true,
+    "category": "finance",
+    "input": "He is paid 45,000$ per month.",
+    "output": "He is paid [AMOUNT] per month."
+  },
+  {
+    "id": "seed-172",
+    "enabled": true,
+    "category": "finance",
+    "input": "Salary is 23000 dollars annually.",
+    "output": "Salary is [AMOUNT] annually."
+  },
+  {
+    "id": "seed-173",
+    "enabled": true,
+    "category": "finance",
+    "input": "The bonus was 1,250.50 INR.",
+    "output": "The bonus was [AMOUNT]."
+  },
+  {
+    "id": "seed-174",
+    "enabled": true,
+    "category": "finance",
+    "input": "Rent is 9800/mo for the unit.",
+    "output": "Rent is [AMOUNT] for the unit."
+  },
+  {
+    "id": "seed-175",
+    "enabled": true,
+    "category": "finance",
+    "input": "Account balance is 750000.",
+    "output": "Account balance is [AMOUNT]."
+  },
+  {
+    "id": "seed-176",
+    "enabled": true,
+    "category": "finance",
+    "input": "Card 5555-4444-3333-2222 was used.",
+    "output": "Card [PAYMENT_CARD] was used."
+  },
+  {
+    "id": "seed-177",
+    "enabled": true,
+    "category": "finance",
+    "input": "CVV is 276 for the card.",
+    "output": "CVV is [CARD_SECURITY_CODE] for the card."
+  },
+  {
+    "id": "seed-178",
+    "enabled": true,
+    "category": "finance",
+    "input": "Routing number 100000177 and account number 9000003009.",
+    "output": "Routing number [BANK_INFO] and account number [BANK_INFO]."
+  },
+  {
+    "id": "seed-179",
+    "enabled": true,
+    "category": "secret",
+    "input": "API key is xoxb-123456789-secret.",
+    "output": "API key is [SECRET]."
+  },
+  {
+    "id": "seed-180",
+    "enabled": true,
+    "category": "secret",
+    "input": "Use token eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMifQ.signature for staging.",
+    "output": "Use token [SECRET] for staging."
+  },
+  {
+    "id": "seed-181",
+    "enabled": true,
+    "category": "secret",
+    "input": "Password: abc123secret987",
+    "output": "Password: [SECRET]"
+  },
+  {
+    "id": "seed-182",
+    "enabled": true,
+    "category": "secret",
+    "input": "Authorization: Bearer sk-test-1234567890abcdef",
+    "output": "Authorization: Bearer [TOKEN]"
+  },
+  {
+    "id": "seed-183",
+    "enabled": true,
+    "category": "secret",
+    "input": "Webhook secret=ghp_abcd1234abcd1234abcd1234",
+    "output": "Webhook secret=[SECRET]"
+  },
+  {
+    "id": "seed-184",
+    "enabled": true,
+    "category": "location",
+    "input": "Ship to 88 MG Road Unit 12.",
+    "output": "Ship to [ADDRESS]."
+  },
+  {
+    "id": "seed-185",
+    "enabled": true,
+    "category": "location",
+    "input": "Home address is 500 Mission St.",
+    "output": "Home address is [ADDRESS]."
+  },
+  {
+    "id": "seed-186",
+    "enabled": true,
+    "category": "location",
+    "input": "ZIP code is 90185.",
+    "output": "ZIP code is [POSTAL_CODE]."
+  },
+  {
+    "id": "seed-187",
+    "enabled": true,
+    "category": "network",
+    "input": "Server IP 172.16.2.8 failed health checks.",
+    "output": "Server IP [IP_ADDRESS] failed health checks."
+  },
+  {
+    "id": "seed-188",
+    "enabled": true,
+    "category": "network",
+    "input": "MAC address A4:B1:C2:D3:E4:F5 belongs to the laptop.",
+    "output": "MAC address [MAC_ADDRESS] belongs to the laptop."
+  },
+  {
+    "id": "seed-189",
+    "enabled": true,
+    "category": "network",
+    "input": "Open https://app.example.com/reset?token=xoxb-123456789-secret",
+    "output": "Open [SENSITIVE_URL]"
+  },
+  {
+    "id": "seed-190",
+    "enabled": true,
+    "category": "legal",
+    "input": "Claim number is PAT-12345.",
+    "output": "Claim number is [ID]."
+  },
+  {
+    "id": "seed-191",
+    "enabled": true,
+    "category": "legal",
+    "input": "Case id CLM-983771 was reopened.",
+    "output": "Case id [ID] was reopened."
+  },
+  {
+    "id": "seed-192",
+    "enabled": true,
+    "category": "hr",
+    "input": "Employee id EMP-10191 has rating 2.",
+    "output": "Employee id [ID] has rating [HR_DETAIL]."
+  },
+  {
+    "id": "seed-193",
+    "enabled": true,
+    "category": "hr",
+    "input": "Performance rating was 3 for Nina Rao.",
+    "output": "Performance rating was [HR_DETAIL] for [NAME]."
+  },
+  {
+    "id": "seed-194",
+    "enabled": true,
+    "category": "medical",
+    "input": "Victor Hugo takes lisinopril after dinner.",
+    "output": "[NAME] takes [MEDICATION] after dinner."
+  },
+  {
+    "id": "seed-195",
+    "enabled": true,
+    "category": "medical",
+    "input": "Diagnosis for Leah Cohen: diabetes.",
+    "output": "Diagnosis for [NAME]: [DIAGNOSIS]."
+  },
+  {
+    "id": "seed-196",
+    "enabled": true,
+    "category": "people",
+    "input": "Customer Chris Walker asked for a callback.",
+    "output": "Customer [NAME] asked for a callback."
+  },
+  {
+    "id": "seed-197",
+    "enabled": true,
+    "category": "people",
+    "input": "Patient Isha Shah reported dizziness after lunch.",
+    "output": "Patient [NAME] reported dizziness after lunch."
+  },
+  {
+    "id": "seed-198",
+    "enabled": true,
+    "category": "people",
+    "input": "Employee Ben Taylor received a warning from HR.",
+    "output": "Employee [NAME] received a warning from HR."
+  },
+  {
+    "id": "seed-199",
+    "enabled": true,
+    "category": "people",
+    "input": "Client Maya Singh signed the renewal yesterday.",
+    "output": "Client [NAME] signed the renewal yesterday."
+  },
+  {
+    "id": "seed-200",
+    "enabled": true,
+    "category": "people",
+    "input": "My name is Noah Wilson and I need help.",
+    "output": "My name is [NAME] and I need help."
+  }
+]

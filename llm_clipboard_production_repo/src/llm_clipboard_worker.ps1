@@ -78,6 +78,53 @@ function Invoke-PrivacifyRedaction {
     return $redacted
 }
 
+function Get-PrivacifyExamplePrompt {
+    param(
+        [Parameter(Mandatory=$true)]$Config,
+        [Parameter(Mandatory=$true)][string]$ConfigPath
+    )
+
+    if ($null -ne $Config.privacify_examples_enabled -and -not [bool]$Config.privacify_examples_enabled) {
+        return ""
+    }
+
+    $appDir = Split-Path -Parent $ConfigPath
+    $examplesFile = Join-Path $appDir "privacify_examples.json"
+    if ($Config.privacify_examples_file) {
+        $examplesFile = [string]$Config.privacify_examples_file
+    }
+    if (-not (Test-Path -LiteralPath $examplesFile)) {
+        return ""
+    }
+
+    $limit = 60
+    if ($Config.privacify_examples_limit) {
+        $limit = [Math]::Max(0, [int]$Config.privacify_examples_limit)
+    }
+    if ($limit -le 0) {
+        return ""
+    }
+
+    $examples = Get-Content -Raw -LiteralPath $examplesFile | ConvertFrom-Json
+    $enabled = @($examples | Where-Object { $null -eq $_.enabled -or [bool]$_.enabled } | Select-Object -First $limit)
+    if ($enabled.Count -eq 0) {
+        return ""
+    }
+
+    $parts = New-Object System.Collections.Generic.List[string]
+    $parts.Add("User examples. Follow this redaction style:")
+    foreach ($example in $enabled) {
+        if ([string]::IsNullOrWhiteSpace([string]$example.input) -or [string]::IsNullOrWhiteSpace([string]$example.output)) {
+            continue
+        }
+        $parts.Add("Input: $($example.input)")
+        $parts.Add("Output: $($example.output)")
+        $parts.Add("")
+    }
+
+    return ($parts -join "`n").Trim()
+}
+
 if (-not (Test-Path -LiteralPath $ConfigPath)) {
     throw "Config file not found: $ConfigPath"
 }
@@ -106,9 +153,19 @@ if ($isPrivacifyProfile) {
 }
 
 $prompt = Get-Content -Raw -LiteralPath $profile.prompt_file
+$examplesPrompt = ""
+if ($isPrivacifyProfile) {
+    $examplesPrompt = Get-PrivacifyExamplePrompt -Config $config -ConfigPath $ConfigPath
+}
+
+$promptSections = @($prompt.Trim())
+if (-not [string]::IsNullOrWhiteSpace($examplesPrompt)) {
+    $promptSections += $examplesPrompt
+}
+$promptWithExamples = $promptSections -join "`n`n"
 
 $fullPrompt = @"
-$prompt
+$promptWithExamples
 
 Input text:
 $inputText
