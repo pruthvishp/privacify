@@ -1,8 +1,13 @@
 [CmdletBinding()]
 param(
     [string]$InstallDir = "$env:USERPROFILE\LLMClipboardPaste",
-    [string]$Model = "phi3",
-    [switch]$StartAtLogin
+    [string]$Model = "qwen2.5:3b",
+    [string]$NodeVersion = "20.11.1",
+    [int]$ManagerPort = 8787,
+    [switch]$StartAtLogin,
+    [switch]$SkipOllama,
+    [switch]$SkipManagerUi,
+    [switch]$NoLaunchManager
 )
 
 $ErrorActionPreference = "Stop"
@@ -58,7 +63,7 @@ function Ensure-WingetPackage {
     if (-not $wg) { throw "WinGet is required for $Name but was not found on this PC." }
 
     Write-Step "Installing $Name with WinGet"
-    & winget install --id $Id -e --accept-package-agreements --accept-source-agreements --disable-interactivity
+    & winget install --id $Id -e --accept-package-agreements --accept-source-agreements --disable-interactivity | Out-Host
 }
 
 function Ensure-Ollama {
@@ -97,6 +102,65 @@ function Ensure-AutoHotkey {
     $ahk = Get-AutoHotkeyExe
     if (-not $ahk) { throw "AutoHotkey v2 was not found after installation." }
     return $ahk
+}
+
+function Get-NodeArch {
+    switch ($env:PROCESSOR_ARCHITECTURE) {
+        "ARM64" { return "arm64" }
+        default { return "x64" }
+    }
+}
+
+function Get-BundledNodeExe {
+    param([Parameter(Mandatory=$true)][string]$TargetDir)
+
+    $nodeRoot = Join-Path $TargetDir "runtime\node"
+    $nodeExe = Join-Path $nodeRoot "node.exe"
+    if (Test-Path -LiteralPath $nodeExe) { return $nodeExe }
+    return $null
+}
+
+function Ensure-BundledNode {
+    param(
+        [Parameter(Mandatory=$true)][string]$TargetDir,
+        [Parameter(Mandatory=$true)][string]$Version
+    )
+
+    $existing = Get-BundledNodeExe -TargetDir $TargetDir
+    if ($existing) { return $existing }
+
+    $arch = Get-NodeArch
+    $nodeName = "node-v$Version-win-$arch"
+    $nodeUrl = "https://nodejs.org/dist/v$Version/$nodeName.zip"
+    $downloadPath = Join-Path $env:TEMP "$nodeName.zip"
+    $extractPath = Join-Path $env:TEMP $nodeName
+    $runtimeDir = Join-Path $TargetDir "runtime"
+    $nodeRoot = Join-Path $runtimeDir "node"
+
+    Write-Step "Installing bundled Node.js $Version ($arch) for the manager UI"
+    New-Item -ItemType Directory -Force -Path $runtimeDir | Out-Null
+
+    if (Test-Path -LiteralPath $downloadPath) {
+        Remove-Item -LiteralPath $downloadPath -Force
+    }
+    if (Test-Path -LiteralPath $extractPath) {
+        Remove-Item -LiteralPath $extractPath -Recurse -Force
+    }
+
+    Invoke-WebRequest -Uri $nodeUrl -OutFile $downloadPath
+    Expand-Archive -LiteralPath $downloadPath -DestinationPath $env:TEMP -Force
+
+    if (Test-Path -LiteralPath $nodeRoot) {
+        Remove-Item -LiteralPath $nodeRoot -Recurse -Force
+    }
+    Move-Item -LiteralPath $extractPath -Destination $nodeRoot
+
+    $nodeExe = Join-Path $nodeRoot "node.exe"
+    if (-not (Test-Path -LiteralPath $nodeExe)) {
+        throw "Bundled Node.js was not found after extraction."
+    }
+
+    return $nodeExe
 }
 
 function Ensure-OllamaServer {
@@ -151,15 +215,24 @@ function Install-AppFiles {
     $here = $PSScriptRoot
     Copy-Item -LiteralPath (Join-Path $here "src\llm_clipboard.ahk") -Destination (Join-Path $TargetDir "llm_clipboard.ahk") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\llm_clipboard_worker.ps1") -Destination (Join-Path $TargetDir "llm_clipboard_worker.ps1") -Force
+    Copy-Item -LiteralPath (Join-Path $here "src\privacify_manager.js") -Destination (Join-Path $TargetDir "privacify_manager.js") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\rewrite.txt") -Destination (Join-Path $TargetDir "prompts\rewrite.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\summarize.txt") -Destination (Join-Path $TargetDir "prompts\summarize.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\bullets.txt") -Destination (Join-Path $TargetDir "prompts\bullets.txt") -Force
     Copy-Item -LiteralPath (Join-Path $here "src\prompts\privacify.txt") -Destination (Join-Path $TargetDir "prompts\privacify.txt") -Force
+    Copy-Item -LiteralPath (Join-Path $here "src\privacify_examples.json") -Destination (Join-Path $TargetDir "privacify_examples.json") -Force
 
     $config = @{
         model = $SelectedModel
         ollama_url = "http://127.0.0.1:11434/api/generate"
         trim_output = $true
+        privacify_use_model = $true
+        privacify_examples_enabled = $true
+        privacify_examples_limit = 60
+        privacify_examples_file = (Join-Path $TargetDir "privacify_examples.json")
+        app_name = "Privacify"
+        accent_color = "#2563eb"
+        image_path = ""
         profiles = @(
             @{ name = "rewrite";   hotkey = "^!1"; prompt_file = (Join-Path $TargetDir "prompts\rewrite.txt") },
             @{ name = "summarize"; hotkey = "^!2"; prompt_file = (Join-Path $TargetDir "prompts\summarize.txt") },
@@ -169,6 +242,53 @@ function Install-AppFiles {
     }
 
     $config | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $TargetDir "config.json") -Encoding UTF8
+}
+
+function Write-ManagerLauncher {
+    param(
+        [Parameter(Mandatory=$true)][string]$TargetDir,
+        [Parameter(Mandatory=$true)][string]$NodeExe,
+        [Parameter(Mandatory=$true)][int]$Port
+    )
+
+    $launcherPath = Join-Path $TargetDir "Start Privacify Manager.ps1"
+    $managerPath = Join-Path $TargetDir "privacify_manager.js"
+    $content = @"
+`$ErrorActionPreference = "Stop"
+`$node = "$NodeExe"
+`$manager = "$managerPath"
+`$port = $Port
+
+Start-Process -FilePath `$node -ArgumentList @("`"`$manager`"", "`$port") -WorkingDirectory "$TargetDir" -WindowStyle Hidden | Out-Null
+Start-Sleep -Milliseconds 700
+Start-Process "http://127.0.0.1:`$port/"
+"@
+
+    Set-Content -LiteralPath $launcherPath -Value $content -Encoding UTF8
+    return $launcherPath
+}
+
+function Register-DesktopShortcut {
+    param(
+        [Parameter(Mandatory=$true)][string]$ShortcutName,
+        [Parameter(Mandatory=$true)][string]$TargetPath,
+        [string]$Arguments = "",
+        [string]$WorkingDirectory = "",
+        [string]$IconLocation = ""
+    )
+
+    $desktop = [Environment]::GetFolderPath("Desktop")
+    $shortcutPath = Join-Path $desktop "$ShortcutName.lnk"
+
+    $shell = New-Object -ComObject WScript.Shell
+    $shortcut = $shell.CreateShortcut($shortcutPath)
+    $shortcut.TargetPath = $TargetPath
+    $shortcut.Arguments = $Arguments
+    if ($WorkingDirectory) { $shortcut.WorkingDirectory = $WorkingDirectory }
+    if ($IconLocation) { $shortcut.IconLocation = $IconLocation }
+    $shortcut.Save()
+
+    return $shortcutPath
 }
 
 function Register-StartupShortcut {
@@ -190,14 +310,30 @@ function Register-StartupShortcut {
 }
 
 Write-Step "Installing dependencies"
-$ollamaExe = Ensure-Ollama
+if (-not $SkipOllama) {
+    $ollamaExe = Ensure-Ollama
+}
 $ahkExe = Ensure-AutoHotkey
 
 Write-Step "Preparing app files"
 Install-AppFiles -TargetDir $InstallDir -SelectedModel $Model
 
-Ensure-OllamaServer -OllamaExe $ollamaExe
-Ensure-Model -OllamaExe $ollamaExe -ModelName $Model
+$managerLauncher = $null
+if (-not $SkipManagerUi) {
+    $nodeExe = Ensure-BundledNode -TargetDir $InstallDir -Version $NodeVersion
+    $managerLauncher = Write-ManagerLauncher -TargetDir $InstallDir -NodeExe $nodeExe -Port $ManagerPort
+    Register-DesktopShortcut `
+        -ShortcutName "Privacify Manager" `
+        -TargetPath "powershell.exe" `
+        -Arguments ('-ExecutionPolicy Bypass -File "' + $managerLauncher + '"') `
+        -WorkingDirectory $InstallDir `
+        -IconLocation "$nodeExe,0" | Out-Null
+}
+
+if (-not $SkipOllama) {
+    Ensure-OllamaServer -OllamaExe $ollamaExe
+    Ensure-Model -OllamaExe $ollamaExe -ModelName $Model
+}
 
 $scriptPath = Join-Path $InstallDir "llm_clipboard.ahk"
 
@@ -209,14 +345,31 @@ if ($StartAtLogin) {
 Write-Step "Launching hotkey app"
 Start-Process -FilePath $ahkExe -ArgumentList ('"' + $scriptPath + '"') -WorkingDirectory $InstallDir | Out-Null
 
+if ($managerLauncher -and -not $NoLaunchManager) {
+    Write-Step "Launching manager UI"
+    Start-Process -FilePath "powershell.exe" -ArgumentList ('-ExecutionPolicy Bypass -File "' + $managerLauncher + '"') -WorkingDirectory $InstallDir -WindowStyle Hidden | Out-Null
+}
+
 Write-Host ""
 Write-Host "Done." -ForegroundColor Green
 Write-Host "Install directory: $InstallDir"
 Write-Host "Model: $Model"
+if ($SkipOllama) {
+    Write-Host "Ollama setup skipped. Rewrite, summarize, and bullets need Ollama before use."
+}
 Write-Host "Hotkeys:"
 Write-Host "  Ctrl+Alt+1 = rewrite"
 Write-Host "  Ctrl+Alt+2 = summarize"
 Write-Host "  Ctrl+Alt+3 = bullets"
 Write-Host "  Ctrl+Alt+4 = privacify"
+Write-Host "Manager UI:"
+if ($SkipManagerUi) {
+    Write-Host "  Manager UI setup skipped."
+}
+else {
+    Write-Host "  http://127.0.0.1:$ManagerPort/"
+    Write-Host "  Desktop shortcut: Privacify Manager"
+    Write-Host "  Launcher: $managerLauncher"
+}
 Write-Host ""
 Write-Host "Use -StartAtLogin if you want it to auto-start when the user signs in."

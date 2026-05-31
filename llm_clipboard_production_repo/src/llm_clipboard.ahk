@@ -3,6 +3,50 @@
 
 global isRunning := false
 
+GetConfigValue(keyName, fallback := "") {
+    config := A_ScriptDir "\config.json"
+    if !FileExist(config)
+        return fallback
+
+    text := FileRead(config, "UTF-8")
+    pattern := '"\Q' keyName '\E"\s*:\s*"([^"]*)"'
+    if RegExMatch(text, pattern, &match)
+        return match[1]
+    return fallback
+}
+
+GetProfileHotkey(profileName, fallback) {
+    config := A_ScriptDir "\config.json"
+    if !FileExist(config)
+        return fallback
+
+    text := FileRead(config, "UTF-8")
+    pattern := 's)"name"\s*:\s*"\Q' profileName '\E".*?"hotkey"\s*:\s*"([^"]*)"'
+    if RegExMatch(text, pattern, &match)
+        return match[1]
+    return fallback
+}
+
+RegisterProfileHotkey(profileName, fallback) {
+    hotkeyText := GetProfileHotkey(profileName, fallback)
+    try {
+        Hotkey(hotkeyText, (*) => RunProfile(profileName), "On")
+        return hotkeyText
+    }
+    catch as err {
+        TrayTip("LLM Clipboard", "Invalid hotkey for " profileName ": " hotkeyText, 2)
+        Hotkey(fallback, (*) => RunProfile(profileName), "On")
+        return fallback
+    }
+}
+
+ApplyTrayBranding() {
+    imagePath := GetConfigValue("image_path", "")
+    if (imagePath != "" && FileExist(imagePath)) {
+        try TraySetIcon(imagePath)
+    }
+}
+
 RunProfile(profileName) {
     global isRunning
 
@@ -106,20 +150,10 @@ RunProfile(profileName) {
     }
 }
 
-^!1::{
-    RunProfile("rewrite")
-}
+ApplyTrayBranding()
+rewriteHotkey := RegisterProfileHotkey("rewrite", "^!1")
+summarizeHotkey := RegisterProfileHotkey("summarize", "^!2")
+bulletsHotkey := RegisterProfileHotkey("bullets", "^!3")
+privacifyHotkey := RegisterProfileHotkey("privacify", "^!4")
 
-^!2::{
-    RunProfile("summarize")
-}
-
-^!3::{
-    RunProfile("bullets")
-}
-
-^!4::{
-    RunProfile("privacify")
-}
-
-TrayTip("LLM Clipboard", "Ready: Ctrl+Alt+1/2/3/4", 2)
+TrayTip("LLM Clipboard", "Ready: " rewriteHotkey "/" summarizeHotkey "/" bulletsHotkey "/" privacifyHotkey, 2)
