@@ -9,6 +9,7 @@ Copy text, press a hotkey, wait for the beep, then paste the transformed result.
 - Fully local processing
 - No API keys
 - One-click installer
+- Bundled portable Node.js runtime for the manager UI
 - Startup support
 - Editable prompt files
 - Local manager UI for model, hotkey, prompt, brand, example, test, and log settings
@@ -27,7 +28,13 @@ Copy text, press a hotkey, wait for the beep, then paste the transformed result.
 
 ## Install
 
-From PowerShell in the repo root:
+Double-click:
+
+```text
+Install Privacify.cmd
+```
+
+Or run from PowerShell in the repo root:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -StartAtLogin
@@ -45,13 +52,22 @@ For privacify-only installs, you can skip Ollama setup:
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -SkipOllama
 ```
 
+The installer also downloads a portable Node.js runtime into the app folder so users do not need to install Node manually. To install without the UI runtime:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1 -SkipManagerUi
+```
+
 ## What the installer does
 
 - Installs Ollama
 - Installs AutoHotkey v2
+- Downloads bundled portable Node.js for the manager UI
 - Pulls the default model (`qwen2.5:3b`)
 - Copies app files to `%USERPROFILE%\LLMClipboardPaste`
 - Copies the manager UI and seeded Privacify examples
+- Creates a desktop shortcut named **Privacify Manager**
+- Opens the manager UI at `http://127.0.0.1:8787/`
 - Optionally registers startup at login
 - Launches the hotkey app
 
@@ -77,10 +93,12 @@ The installer copies the manager UI to:
 %USERPROFILE%\LLMClipboardPaste\privacify_manager.js
 ```
 
-Start it with:
+The installer starts the UI automatically and creates a desktop shortcut named **Privacify Manager**.
+
+You can also start it manually with:
 
 ```powershell
-node "$env:USERPROFILE\LLMClipboardPaste\privacify_manager.js" 8787
+powershell -ExecutionPolicy Bypass -File "$env:USERPROFILE\LLMClipboardPaste\Start Privacify Manager.ps1"
 ```
 
 Then open:
