@@ -28,6 +28,12 @@ Copy text, press a hotkey, wait for the beep, then paste the transformed result.
 
 ## Install
 
+### Windows setup EXE
+
+Build or download `dist\PrivacifySetup.exe`, then double-click it. The setup EXE packages this installer and runs the same local installation flow with startup enabled. Build instructions are in [installer/README.md](installer/README.md).
+
+### Script installer
+
 Double-click:
 
 ```text
@@ -190,6 +196,9 @@ C:\Users\<your-user>\LLMClipboardPaste\llm_clipboard.ahk
 ```text
 .
 |-- install.ps1
+|-- installer/
+|   |-- Privacify.iss
+|   `-- README.md
 |-- README.md
 `-- src/
     |-- llm_clipboard.ahk
