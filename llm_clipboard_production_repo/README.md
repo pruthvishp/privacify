@@ -28,6 +28,8 @@ Copy text, press a hotkey, wait for the beep, then paste the transformed result.
 
 ## Install
 
+The end-user installation guide is available in [docs/user-guide](docs/user-guide/).
+
 Double-click:
 
 ```text
