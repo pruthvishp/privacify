@@ -16,6 +16,50 @@ function Write-Step($msg) {
     Write-Host "==> $msg" -ForegroundColor Cyan
 }
 
+function Confirm-Installation {
+    $actions = @(
+        "Copy Privacify files and settings to $InstallDir",
+        "Create the Privacify Manager desktop shortcut",
+        "Start the Privacify hotkeys and local manager UI"
+    )
+
+    if ($StartAtLogin) {
+        $actions += "Create a startup shortcut so the Privacify hotkeys start when you sign in"
+    }
+
+    if ($SkipOllama) {
+        $actions += "Skip Ollama and local-model installation (Privacify redaction rules still work)"
+    }
+    else {
+        $actions += @(
+            "Install or reuse Ollama for local AI processing",
+            "Download the local model $Model"
+        )
+    }
+
+    $actions += "Install or reuse AutoHotkey v2 for the hotkeys"
+
+    if ($SkipManagerUi) {
+        $actions += "Skip the local manager UI setup"
+    }
+    else {
+        $actions += "Download a portable Node.js runtime for the local manager UI"
+    }
+
+    Write-Host ""
+    Write-Host "Privacify setup will:" -ForegroundColor Yellow
+    foreach ($action in $actions) {
+        Write-Host "  - $action"
+    }
+    Write-Host ""
+
+    $response = Read-Host "Continue? Type Y to agree, or N to cancel"
+    if ($response -notmatch '^(?i:y|yes)$') {
+        Write-Host "Installation cancelled. No changes were made." -ForegroundColor Yellow
+        exit 2
+    }
+}
+
 function Refresh-Path {
     $machine = [Environment]::GetEnvironmentVariable("Path", "Machine")
     $user = [Environment]::GetEnvironmentVariable("Path", "User")
@@ -308,6 +352,8 @@ function Register-StartupShortcut {
     $shortcut.IconLocation = "$AutoHotkeyExe,0"
     $shortcut.Save()
 }
+
+Confirm-Installation
 
 Write-Step "Installing dependencies"
 if (-not $SkipOllama) {
