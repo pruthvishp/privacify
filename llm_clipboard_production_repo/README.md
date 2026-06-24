@@ -124,6 +124,12 @@ The UI includes:
 - **Test**: run a Privacify test without using the hotkey
 - **Logs**: view recent debug log entries
 
+### Test and improve results
+
+Use the **Test** tab to paste representative text, run Privacify, and compare the output with the result you expect. Start with synthetic data when possible.
+
+When a result needs a different redaction style, open **Examples**, add an input/output pair that shows the desired result, and select **Save examples**. Then rerun the same case in **Test**. These examples are injected as runtime prompt context for the local model; they do not train or fine-tune the model. Add examples gradually and keep the most relevant ones enabled, because more context can increase latency.
+
 ## Models
 
 Privacify uses Ollama. The default install model is:
@@ -268,6 +274,7 @@ Useful when:
 
 - Larger inputs may take longer
 - More examples may improve style matching but can increase latency
+- On the current local setup, model-assisted redaction can take about 45-60 seconds, depending on the selected model, machine resources, input size, and number of enabled examples
 - You can switch to a different Ollama model in the UI or by editing `config.json`
 - The installer defaults to `qwen2.5:3b`
 
