@@ -37,7 +37,7 @@ The end-user installation guide is available in [docs/user-guide](docs/user-guid
 3. Extract the ZIP and open the `llm_clipboard_production_repo` folder.
 4. Double-click `Install Privacify.cmd`, review the setup summary, and type `Y` to agree. Type `N` to cancel before any changes are made. Leave the installer window open until it reports completion. The first install downloads the required local runtimes and model, so it can take several minutes.
 
-After installation, use the **Privacify Manager** desktop shortcut for settings. Copy sensitive text, press **Ctrl + Alt + 4**, wait for the ready signal, then paste the redacted result.
+After installation, use the **Privacify Manager** desktop shortcut for settings. Copy sensitive text, press **Ctrl + Alt + 4**, wait for the tray notification and ready beep, then paste the redacted result.
 
 ### PowerShell alternative
 
@@ -82,7 +82,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -SkipManagerUi
 
 1. Copy text
 2. Press one of the hotkeys
-3. Wait for the beep
+3. Wait for the tray notification and beep that confirm the result is ready
 4. Paste
 
 For Privacify:
