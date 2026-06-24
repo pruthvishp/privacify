@@ -30,13 +30,18 @@ Copy text, press a hotkey, wait for the beep, then paste the transformed result.
 
 The end-user installation guide is available in [docs/user-guide](docs/user-guide/).
 
-Double-click:
+### Download and install
 
-```text
-Install Privacify.cmd
-```
+1. Open [github.com/pruthvishp/privacify](https://github.com/pruthvishp/privacify).
+2. Click **Code**, then **Download ZIP**.
+3. Extract the ZIP and open the `llm_clipboard_production_repo` folder.
+4. Double-click `Install Privacify.cmd` and leave the installer window open until it reports completion. The first install downloads the required local runtimes and model, so it can take several minutes.
 
-Or run from PowerShell in the repo root:
+After installation, use the **Privacify Manager** desktop shortcut for settings. Copy sensitive text, press **Ctrl + Alt + 4**, wait for the ready signal, then paste the redacted result.
+
+### PowerShell alternative
+
+From the `llm_clipboard_production_repo` folder:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -StartAtLogin
