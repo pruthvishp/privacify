@@ -37,7 +37,7 @@ The end-user installation guide is available in [docs/user-guide](docs/user-guid
 3. Extract the ZIP and open the `llm_clipboard_production_repo` folder.
 4. Double-click `Install Privacify.cmd`, review the setup summary, and type `Y` to agree. Type `N` to cancel before any changes are made. Leave the installer window open until it reports completion. The first install downloads the required local runtimes and model, so it can take several minutes.
 
-After installation, use the **Privacify Manager** desktop shortcut for settings. Copy sensitive text, press **Ctrl + Alt + 4**, wait for the ready signal, then paste the redacted result.
+After installation, use the **Privacify Manager** desktop shortcut for settings. Copy sensitive text, press **Ctrl + Alt + 4**, wait for the tray notification and ready beep, then paste the redacted result.
 
 ### PowerShell alternative
 
@@ -82,7 +82,7 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1 -SkipManagerUi
 
 1. Copy text
 2. Press one of the hotkeys
-3. Wait for the beep
+3. Wait for the tray notification and beep that confirm the result is ready
 4. Paste
 
 For Privacify:
@@ -116,13 +116,19 @@ http://127.0.0.1:8787/
 
 The UI includes:
 
-- **Overview**: model, Ollama URL, trim output, and Privacify model toggle
+- **Overview**: select an installed or recommended local Ollama model, pull a different compatible model, set the Ollama URL, trim output, and control the Privacify model toggle
 - **Image & Brand**: app name, accent color, and tray/brand image path
 - **Hotkeys**: edit profile hotkeys and restart AutoHotkey
 - **Prompts**: edit rewrite, summarize, bullets, and Privacify prompts
 - **Examples**: manage Privacify input/output examples
 - **Test**: run a Privacify test without using the hotkey
 - **Logs**: view recent debug log entries
+
+### Test and improve results
+
+Use the **Test** tab to paste representative text, run Privacify, and compare the output with the result you expect. Start with synthetic data when possible.
+
+When a result needs a different redaction style, open **Examples**, add an input/output pair that shows the desired result, and select **Save examples**. Then rerun the same case in **Test**. These examples are injected as runtime prompt context for the local model; they do not train or fine-tune the model. Add examples gradually and keep the most relevant ones enabled, because more context can increase latency.
 
 ## Models
 
@@ -268,6 +274,7 @@ Useful when:
 
 - Larger inputs may take longer
 - More examples may improve style matching but can increase latency
+- On the current local setup, model-assisted redaction can take about 45-60 seconds, depending on the selected model, machine resources, input size, and number of enabled examples
 - You can switch to a different Ollama model in the UI or by editing `config.json`
 - The installer defaults to `qwen2.5:3b`
 
