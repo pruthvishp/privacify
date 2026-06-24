@@ -116,7 +116,7 @@ http://127.0.0.1:8787/
 
 The UI includes:
 
-- **Overview**: model, Ollama URL, trim output, and Privacify model toggle
+- **Overview**: select an installed or recommended local Ollama model, pull a different compatible model, set the Ollama URL, trim output, and control the Privacify model toggle
 - **Image & Brand**: app name, accent color, and tray/brand image path
 - **Hotkeys**: edit profile hotkeys and restart AutoHotkey
 - **Prompts**: edit rewrite, summarize, bullets, and Privacify prompts
